@@ -76,9 +76,25 @@ const generateProblemData = (n) => {
     return problems;
 };
 
-const problems = generateProblemData(10);
+const generateSuggestionData = (n) => {
+    const suggestions = [];
+    for (let i = 0; i < n; i++) {
+        let suggestion = {
+            body: faker.lorem.sentence(),
+            approvedByMentor: false,
+        };
+        suggestions.push(suggestion);
+    }
+    return suggestions;
+};
 
-console.log(problems);
+const suggestions = generateSuggestionData(10);
+
+console.log(suggestions);
+
+// const problems = generateProblemData(10);
+
+// console.log(problems);
 
 //const tech = generateTechData(techList);
 // const users = generateUserData(10);
