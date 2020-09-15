@@ -8,7 +8,7 @@
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed-dev": "knex seed:run",
     "seed-test": "NODE_ENV=test knex seed:run",
-    "seed:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex seed:run",
+    "seed-prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex seed:run",
     "migrate-make": "knex migrate:make",
     "migrate-latest": "knex migrate:latest",
     "migrate-rollback": "knex migrate:rollback",
@@ -28,15 +28,15 @@
   },
   "homepage": "https://github.com/davidjohn290/hive-got-bugs-be#readme",
   "dependencies": {
-    "faker": "^5.1.0",
-    "lodash": "^4.17.20",
-    "shuffle-array": "^1.0.1"
-  },
-  "devDependencies": {
-    "jest": "^26.4.2",
-    "db-migrate": "^0.11.11",
     "express": "^4.17.1",
     "knex": "^0.21.5",
     "pg": "^8.3.3"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.20",
+    "shuffle-array": "^1.0.1",
+    "faker": "^5.1.0",
+    "jest": "^26.4.2",
+    "db-migrate": "^0.11.11"
   }
 }
