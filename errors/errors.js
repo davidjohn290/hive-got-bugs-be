@@ -13,7 +13,7 @@ exports.handlePSQL400Errors = (err, req, res, next) => {
   } else next(err);
 };
 
-exports.handlePSQL404Error = () => {
+exports.handlePSQL404Error = (err, req, res) => {
   const psqlErrorCodes = ["23503"];
   if (psqlErrorCodes.includes(err.code)) {
     res.status(404).res.send({ msg: "Request not found!" });
@@ -21,17 +21,17 @@ exports.handlePSQL404Error = () => {
 };
 
 // Invalid urls
-exports.handle404Errors = (err, req, res, next) => {
+exports.handle404Errors = (err, req, res) => {
   res.status(404).send({ msg: "Path not found!" });
 };
 
 // Controller
-exports.handle405Errors = (err, req, res, next) => {
+exports.handle405Errors = (err, req, res) => {
   res.status(405).send({ msg: "Sorry invalid method!" });
 };
 
 // Server-side Error
-exports.handle500Errors = (err, req, res, next) => {
+exports.handle500Errors = (err, req, res) => {
   console.log(err);
   res.status(500).send({ msg: "server error!" });
 };
