@@ -24,9 +24,9 @@ const techList = [
   "SQL",
 ];
 
-const getDateOneYearAgo = () => {
+const getDateMonthsAgo = (months) => {
   const yearAgo = new Date();
-  yearAgo.setMonth(yearAgo.getMonth() - 12);
+  yearAgo.setMonth(yearAgo.getMonth() - months);
   return yearAgo;
 };
 
@@ -39,20 +39,23 @@ const generateTechData = (techList) => {
 const generateUserData = (n) => {
   const users = [];
   const roleRef = { 0: "user", 1: "mentor" };
+  const eighteenMonthsAgo = getDateMonthsAgo(18);
+  const oneYearAgo = getDateMonthsAgo(12);
 
   for (let i = 0; i < n; i++) {
     const shuffledSkills = shuffle(techList);
     const role = roleRef[Math.round(Math.random())];
 
     const user = {
+      created_at: faker.date.between(eighteenMonthsAgo, oneYearAgo),
       name: faker.name.findName(),
       username: faker.internet.userName(),
-      avatarUrl: faker.image.avatar(),
-      onlineStatus: "false",
+      avatar_url: faker.image.avatar(),
+      online_status: "false",
       role: role,
-      bugPoints: Math.round(Math.random() * 100),
-      bugPointsPrevMonth: Math.round(Math.random() * 10),
-      githubUrl:
+      bug_points: Math.round(Math.random() * 100),
+      bug_points_over_month: Math.round(Math.random() * 10),
+      github_url:
         role === "mentor" ? `https://github.com/${faker.random.word()}` : null,
       description: role === "mentor" ? faker.lorem.paragraph() : null,
       skill1: role === "mentor" ? shuffledSkills[0] : null,
@@ -68,24 +71,24 @@ const generateUserData = (n) => {
 
 const generateProblemData = (n, users, tech) => {
   const problems = [];
-  const oneYearAgo = getDateOneYearAgo();
+  const oneYearAgo = getDateMonthsAgo(12);
 
   for (let i = 0; i < n; i++) {
     const problem = {
       title: faker.lorem.sentence(),
-      user: sample(users).username,
+      username: sample(users).username,
       body: faker.lorem.paragraph(),
       difficulty: Math.round(Math.random() * 2),
       solved: faker.random.boolean().toString(),
       tech: sample(tech).slug,
-      date: faker.date.between(oneYearAgo, new Date()),
+      created_at: faker.date.between(oneYearAgo, new Date()),
     };
     problems.push(problem);
   }
   return problems;
 };
 
-const generateSuggestionData = (upToNPerProblem, problems) => {
+const generateSuggestionData = (upToNPerProblem, problems, users) => {
   const suggestions = [];
   for (problem of problems) {
     let isApproved = "true";
@@ -93,9 +96,10 @@ const generateSuggestionData = (upToNPerProblem, problems) => {
     for (let i = 0; i < Math.round(Math.random() * upToNPerProblem); i++) {
       let suggestion = {
         belongsTo: problem.title,
+        username: sample(users).username,
         body: faker.lorem.sentence(),
         approved: problem.solved === "true" ? isApproved : "false",
-        date: faker.date.between(problem.date, new Date()),
+        created_at: faker.date.between(problem.date, new Date()),
       };
       suggestions.push(suggestion);
       isApproved = "false";
@@ -111,7 +115,7 @@ const formatData = (array) => {
 const tech = generateTechData(techList);
 const users = generateUserData(5);
 const problems = generateProblemData(10, users, tech);
-const suggestions = generateSuggestionData(4, problems);
+const suggestions = generateSuggestionData(4, problems, users);
 
 mkdir("./db/data/dev-data")
   .then(() => {
@@ -134,8 +138,6 @@ mkdir("./db/data/dev-data")
       "utf8"
     );
   })
-  .catch((err) => {
-    if (err.errno === -17)
-      console.log("The folder or files already exist, delete them first");
-    else console.log(err);
+  .catch(() => {
+    console.log("The folder or files already exist, delete them first");
   });
