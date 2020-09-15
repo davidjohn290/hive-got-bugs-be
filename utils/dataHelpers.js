@@ -68,13 +68,13 @@ const generateProblemData = (n, users, tech) => {
 
     for (let i = 0; i < n; i++) {
         const problem = {
-            title: faker.lorem.sentence(),
+            created_at: faker.date.between(oneYearAgo, new Date()),
             username: sample(users).username,
-            body: faker.lorem.paragraph(),
             difficulty: Math.round(Math.random() * 2),
             solved: faker.random.boolean().toString(),
             tech: sample(tech).slug,
-            created_at: faker.date.between(oneYearAgo, new Date()),
+            title: faker.lorem.sentence(),
+            body: faker.lorem.paragraph(),
         };
         problems.push(problem);
     }
