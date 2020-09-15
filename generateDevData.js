@@ -1,6 +1,10 @@
 const faker = require("faker");
-const shuffle = require("shuffle-array");
-const { sample } = require("lodash");
+const { sample, shuffle } = require("lodash");
+const { promisify } = require("util");
+const fs = require("fs");
+
+const mkdir = promisify(fs.mkdir);
+const writeFile = promisify(fs.writeFile);
 
 const techList = [
   "JavaScript",
@@ -23,7 +27,6 @@ const techList = [
 const getDateOneYearAgo = () => {
   const yearAgo = new Date();
   yearAgo.setMonth(yearAgo.getMonth() - 12);
-  console.log(yearAgo);
   return yearAgo;
 };
 
@@ -38,7 +41,7 @@ const generateUserData = (n) => {
   const roleRef = { 0: "user", 1: "mentor" };
 
   for (let i = 0; i < n; i++) {
-    const shuffledSkills = shuffle(techList, { copy: true });
+    const shuffledSkills = shuffle(techList);
     const role = roleRef[Math.round(Math.random())];
 
     const user = {
@@ -64,12 +67,12 @@ const generateUserData = (n) => {
 };
 
 const generateProblemData = (n, users, tech) => {
-  let problems = [];
+  const problems = [];
   const oneYearAgo = getDateOneYearAgo();
 
   for (let i = 0; i < n; i++) {
     const problem = {
-      title: faker.lorem.word(),
+      title: faker.lorem.sentence(),
       user: sample(users).username,
       body: faker.lorem.paragraph(),
       difficulty: Math.round(Math.random() * 2),
@@ -82,21 +85,57 @@ const generateProblemData = (n, users, tech) => {
   return problems;
 };
 
-const generateSuggestionData = (n, problems) => {
+const generateSuggestionData = (upToNPerProblem, problems) => {
   const suggestions = [];
-  for (let i = 0; i < n; i++) {
-    let suggestion = {
-      body: faker.lorem.sentence(),
-      approved: false,
-    };
-    suggestions.push(suggestion);
+  for (problem of problems) {
+    let isApproved = "true";
+
+    for (let i = 0; i < Math.round(Math.random() * upToNPerProblem); i++) {
+      let suggestion = {
+        belongsTo: problem.title,
+        body: faker.lorem.sentence(),
+        approved: problem.solved === "true" ? isApproved : "false",
+        date: faker.date.between(problem.date, new Date()),
+      };
+      suggestions.push(suggestion);
+      isApproved = "false";
+    }
   }
   return suggestions;
 };
 
-const tech = generateTechData(techList);
-const users = generateUserData(10);
-const problems = generateProblemData(20, users, tech);
-const suggestions = generateSuggestionsData(100, problems);
+const formatData = (array) => {
+  return `module.exports = ${JSON.stringify(array, null, 2)}`;
+};
 
-console.log(suggestions);
+const tech = generateTechData(techList);
+const users = generateUserData(5);
+const problems = generateProblemData(10, users, tech);
+const suggestions = generateSuggestionData(4, problems);
+
+mkdir("./db/data/dev-data")
+  .then(() => {
+    return writeFile("./db/data/dev-data/tech.js", formatData(tech), "utf8");
+  })
+  .then(() => {
+    return writeFile("./db/data/dev-data/users.js", formatData(users), "utf8");
+  })
+  .then(() => {
+    return writeFile(
+      "./db/data/dev-data/problems.js",
+      formatData(problems),
+      "utf8"
+    );
+  })
+  .then(() => {
+    return writeFile(
+      "./db/data/dev-data/solutions.js",
+      formatData(users),
+      "utf8"
+    );
+  })
+  .catch((err) => {
+    if (err.errno === -17)
+      console.log("The folder or files already exist, delete them first");
+    else console.log(err);
+  });
