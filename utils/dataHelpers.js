@@ -42,16 +42,16 @@ const generateUserData = (n) => {
         const role = roleRef[Math.round(Math.random())];
 
         const user = {
+            username: faker.internet.userName(),
             created_at: faker.date.between(eighteenMonthsAgo, oneYearAgo),
             name: faker.name.findName(),
-            username: faker.internet.userName(),
             avatar_url: faker.image.avatar(),
             online_status: "false",
-            role: role,
             bug_points: Math.round(Math.random() * 100),
             bug_points_over_month: Math.round(Math.random() * 10),
-            github_url: role === "mentor" ? `https://github.com/${faker.random.word()}` : null,
+            role: role,
             description: role === "mentor" ? faker.lorem.paragraph() : null,
+            github_url: role === "mentor" ? `https://github.com/${faker.random.word()}` : null,
             skill1: role === "mentor" ? shuffledSkills[0] : null,
             skill2: role === "mentor" ? shuffledSkills[1] : null,
             skill3: role === "mentor" ? shuffledSkills[2] : null,
