@@ -4,7 +4,7 @@ const {
   generateUserData,
   generateProblemData,
   generateSuggestionData,
-} = require("../utils/generateDevData");
+} = require("../utils/dataHelpers");
 
 describe("generateDevData.js", () => {
   test("formats tech data", () => {
