@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch",
+    "format": "prettier --write .",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed-dev": "knex seed:run",
     "seed-test": "NODE_ENV=test knex seed:run",
@@ -27,16 +28,23 @@
     "url": "https://github.com/davidjohn290/hive-got-bugs-be/issues"
   },
   "homepage": "https://github.com/davidjohn290/hive-got-bugs-be#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format"
+    }
+  },
   "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.21.5",
     "pg": "^8.3.3"
   },
   "devDependencies": {
-    "lodash": "^4.17.20",
-    "shuffle-array": "^1.0.1",
+    "db-migrate": "^0.11.11",
     "faker": "^5.1.0",
+    "husky": "^4.3.0",
     "jest": "^26.4.2",
-    "db-migrate": "^0.11.11"
+    "lodash": "^4.17.20",
+    "prettier": "^2.1.1",
+    "shuffle-array": "^1.0.1"
   }
 }

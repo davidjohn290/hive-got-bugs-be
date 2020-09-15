@@ -1,47 +1,47 @@
 module.exports = [
   {
-    "slug": "JavaScript"
+    slug: "JavaScript",
   },
   {
-    "slug": "Python"
+    slug: "Python",
   },
   {
-    "slug": "Ruby"
+    slug: "Ruby",
   },
   {
-    "slug": "React"
+    slug: "React",
   },
   {
-    "slug": "Java"
+    slug: "Java",
   },
   {
-    "slug": "TypeScript"
+    slug: "TypeScript",
   },
   {
-    "slug": "Django"
+    slug: "Django",
   },
   {
-    "slug": "C++"
+    slug: "C++",
   },
   {
-    "slug": "C"
+    slug: "C",
   },
   {
-    "slug": "C#.net"
+    slug: "C#.net",
   },
   {
-    "slug": "Redux"
+    slug: "Redux",
   },
   {
-    "slug": "Vue.js"
+    slug: "Vue.js",
   },
   {
-    "slug": "Express"
+    slug: "Express",
   },
   {
-    "slug": "Jest"
+    slug: "Jest",
   },
   {
-    "slug": "SQL"
-  }
-]
+    slug: "SQL",
+  },
+];
