@@ -21,5 +21,8 @@
     "faker": "^5.1.0",
     "lodash": "^4.17.20",
     "shuffle-array": "^1.0.1"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2"
   }
 }
