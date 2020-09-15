@@ -58,7 +58,6 @@ const generateUserData = (n) => {
 // const generateProblemData = (n, userdata) => {};
 
 const generateProblemData = (n) => {
-    // problem_id, title, user, body, difficulty: int, solved:bool, tech
     let problems = [];
     for (let i = 0; i < n; i++) {
         const problem = {
@@ -91,13 +90,5 @@ const generateSuggestionData = (n) => {
 const suggestions = generateSuggestionData(10);
 
 console.log(suggestions);
-
-// const problems = generateProblemData(10);
-
-// console.log(problems);
-
-//const tech = generateTechData(techList);
-// const users = generateUserData(10);
-// const problems = generateProblemData(10, users)
 
 // Users, problems, suggestions, tech
