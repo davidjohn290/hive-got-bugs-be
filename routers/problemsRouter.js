@@ -1,5 +1,5 @@
 const express = require("express");
-problemsRouter = express.Router();
+const problemsRouter = express.Router();
 
 // problemsRouter.get("/", funcHere!);
 

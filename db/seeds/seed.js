@@ -1,6 +1,5 @@
 const {
   problemsData,
-  suggestionsData,
   techData,
   usersData,
 } = require("../data/index");

@@ -9,4 +9,4 @@ const usersRouter = express.Router();
 
 // usersRouter.patch(":user_id/online_status", funcHere!);
 
-module.exports = userRouter;
+module.exports = usersRouter;

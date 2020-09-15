@@ -84,7 +84,7 @@ const generateProblemData = (n, users, tech) => {
 
 const generateSuggestionData = (upToNPerProblem, problems, users) => {
   const suggestions = [];
-  for (problem of problems) {
+  for (const problem of problems) {
     let isApproved = "true";
 
     for (let i = 0; i < Math.round(Math.random() * upToNPerProblem); i++) {
