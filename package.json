@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate-make": "knex migrate:make"
+    "migrate-make": "knex migrate:make",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
