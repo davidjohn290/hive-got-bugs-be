@@ -133,8 +133,8 @@ mkdir("./db/data/dev-data")
   })
   .then(() => {
     return writeFile(
-      "./db/data/dev-data/solutions.js",
-      formatData(users),
+      "./db/data/dev-data/suggestions.js",
+      formatData(suggestions),
       "utf8"
     );
   })
