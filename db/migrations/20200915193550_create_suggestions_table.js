@@ -1,11 +1,11 @@
 exports.up = function (knex) {
   return knex.schema.createTable("suggestions", (suggestionsTable) => {
-    suggestionsTable.increments("suggestion_id");
-    suggestionsTable.integer("problem_id").references("problems.problem_id");
-    suggestionsTable.text("body").notNullable;
-    suggestionsTable.string("username").references("users.username");
-    suggestionsTable.string("approved_by").notNullable;
+    suggestionsTable.increments("suggestion_id").primary();
+    suggestionsTable.integer("problem_id").notNullable().references("problems.problem_id");
     suggestionsTable.timestamp("created_at").defaultTo(knex.fn.now());
+    suggestionsTable.string("username").notNullable().references("users.username");
+    suggestionsTable.string("approved_by")
+    suggestionsTable.text("body").notNullable();
   });
 };
 
