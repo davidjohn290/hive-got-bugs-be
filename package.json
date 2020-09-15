@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --watch",
     "format": "prettier --write .",
+    "lint": "eslint --fix .",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed-dev": "knex seed:run",
     "seed-test": "NODE_ENV=test knex seed:run",
@@ -30,7 +31,7 @@
   "homepage": "https://github.com/davidjohn290/hive-got-bugs-be#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format"
+      "pre-commit": "npm run lint && npm run format"
     }
   },
   "dependencies": {
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "db-migrate": "^0.11.11",
+    "eslint": "^7.9.0",
     "faker": "^5.1.0",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
