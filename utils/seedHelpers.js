@@ -20,13 +20,14 @@ exports.replaceKey = (arr, ref, newKey, oldKey) => {
 };
 
 exports.formatBooleans = (arr) => {
-  if (arr.length > 0) {
-    const newObj = { ...arr[0] };
-    const keys = Object.keys(newObj);
+  const formattedArr = arr.map((item) => {
+    const newItem = { ...item };
+    const keys = Object.keys(newItem);
     keys.forEach((key) => {
-      if (newObj[key] === "true") newObj[key] = true;
-      else if (newObj[key] === "false") newObj[key] = false;
+      if (newItem[key] === "true") newItem[key] = true;
+      else if (newItem[key] === "false") newItem[key] = false;
     });
-    return [newObj];
-  } else return [];
+    return newItem;
+  });
+  return formattedArr;
 };

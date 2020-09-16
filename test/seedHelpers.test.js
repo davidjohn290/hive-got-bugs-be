@@ -310,7 +310,7 @@ describe("formatBooleans", () => {
         created_at: "2020-02-03T16:50:19.450Z",
         username: "Cary_Rutherford83",
         difficulty: 0,
-        solved: false,
+        solved: true,
         tech: "Java",
         title: "aut a vel",
         body: "Voluptatem velit.",
