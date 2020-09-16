@@ -17,7 +17,7 @@ const users = generateUserData(10);
 const problems = generateProblemData(30, users, tech);
 const suggestions = generateSuggestionData(10, problems, users);
 
-mkdir("./db/data/dev-data")
+mkdir("./db/data/dev-data", { recursive: true })
   .then(() => {
     return writeFile("./db/data/dev-data/tech.js", formatData(tech), "utf8");
   })
