@@ -4,7 +4,7 @@ const {
   techData,
   usersData,
 } = require("../data/index");
-const { makeRefObj, replaceKey } = require("../../utils/seedHelpers");
+const { makeRefObj, replaceKey } = require("../../db/utils/seedHelpers");
 
 exports.seed = function (knex) {
   return knex.migrate
