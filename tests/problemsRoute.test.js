@@ -12,16 +12,14 @@ describe("api/problems", () => {
         .expect(200)
         .then(({ body: problems }) => {
           expect(problems.length).toBe(10);
-          // Expect to be sorted by created_at descending
           expect(problems).toBeSortedBy("created_at", { descending: true });
-          // Expect all problems solved keys to be false
           problems.forEach((problem) => {
             expect(problem).toEqual(
               expect.objectContaining({
                 problem_id: expect.any(Number),
                 created_at: expect.any(Date),
                 difficulty: expect.any(Number),
-                solved: expect.any(Boolean),
+                solved: expect.toBe(false),
                 tech: expect.any(String),
                 title: expect.any(String),
                 body: expect.any(String),
