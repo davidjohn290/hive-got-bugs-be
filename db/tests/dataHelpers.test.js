@@ -50,6 +50,12 @@ describe("generateDevData.js", () => {
             bug_points: expect.any(Number),
             bug_points_over_month: expect.any(Number),
             role: expect.any(String),
+            description: null,
+            github_url: null,
+            skill1: null,
+            skill2: null,
+            skill3: null,
+            skill4: null,
           })
         );
         expect(user.description).toBeNull();
