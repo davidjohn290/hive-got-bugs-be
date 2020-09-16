@@ -74,7 +74,7 @@ const generateProblemData = (n, users, tech) => {
       difficulty: Math.round(Math.random() * 2),
       solved: faker.random.boolean().toString(),
       tech: sample(tech).slug,
-      title: faker.lorem.sentence(),
+      title: faker.lorem.words(),
       body: faker.lorem.paragraph(),
     };
     problems.push(problem);
