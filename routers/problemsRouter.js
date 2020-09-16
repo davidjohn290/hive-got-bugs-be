@@ -1,7 +1,8 @@
 const express = require("express");
 const problemsRouter = express.Router();
+const { getProblems } = require("../controllers/problemsController");
 
-// problemsRouter.get("/", funcHere!);
+problemsRouter.get("/", getProblems);
 
 // problemsRouter.get("/:user_id", funcHere!);
 
