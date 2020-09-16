@@ -5,7 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch",
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "setup-dbs": "psql -f ./db/setup.sql",
+    "seed-dev": "knex seed:run",
+    "seed-test": "NODE_ENV=test knex seed:run",
+    "seed-prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex seed:run",
     "migrate-make": "knex migrate:make",
+    "migrate-latest": "knex migrate:latest",
+    "migrate-rollback": "knex migrate:rollback",
+    "migrate-latest:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex migrate:latest",
+    "migrate-rollback:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex migrate:rollback",
     "start": "node listen.js"
   },
   "repository": {
@@ -19,16 +29,24 @@
     "url": "https://github.com/davidjohn290/hive-got-bugs-be/issues"
   },
   "homepage": "https://github.com/davidjohn290/hive-got-bugs-be#readme",
-  "dependencies": {
-    "faker": "^5.1.0",
-    "lodash": "^4.17.20",
-    "shuffle-array": "^1.0.1"
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run format"
+    }
   },
-  "devDependencies": {
-    "jest": "^26.4.2",
-    "db-migrate": "^0.11.11",
+  "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.21.5",
     "pg": "^8.3.3"
+  },
+  "devDependencies": {
+    "db-migrate": "^0.11.11",
+    "eslint": "^7.9.0",
+    "faker": "^5.1.0",
+    "husky": "^4.3.0",
+    "jest": "^26.4.2",
+    "lodash": "^4.17.20",
+    "prettier": "^2.1.1",
+    "shuffle-array": "^1.0.1"
   }
 }

@@ -23,16 +23,16 @@ describe("generateDevData.js", () => {
       if (user.role === "mentor") {
         expect(user).toEqual(
           expect.objectContaining({
+            username: expect.any(String),
             created_at: expect.any(Date),
             name: expect.any(String),
-            username: expect.any(String),
             avatar_url: expect.any(String),
             online_status: expect.any(String),
-            role: expect.any(String),
             bug_points: expect.any(Number),
             bug_points_over_month: expect.any(Number),
-            github_url: expect.any(String),
+            role: expect.any(String),
             description: expect.any(String),
+            github_url: expect.any(String),
             skill1: expect.any(String),
             skill2: expect.any(String),
             skill3: expect.any(String),
@@ -42,14 +42,20 @@ describe("generateDevData.js", () => {
       } else {
         expect(user).toEqual(
           expect.objectContaining({
+            username: expect.any(String),
             created_at: expect.any(Date),
             name: expect.any(String),
-            username: expect.any(String),
             avatar_url: expect.any(String),
             online_status: expect.any(String),
-            role: expect.any(String),
             bug_points: expect.any(Number),
             bug_points_over_month: expect.any(Number),
+            role: expect.any(String),
+            description: expect.toBeNull(),
+            github_url: expect.toBeNull(),
+            skill1: expect.toBeNull(),
+            skill2: expect.toBeNull(),
+            skill3: expect.toBeNull(),
+            skill4: expect.toBeNull(),
           })
         );
       }
@@ -62,13 +68,13 @@ describe("generateDevData.js", () => {
     problems.forEach((problem) => {
       expect(problem).toEqual(
         expect.objectContaining({
-          title: expect.any(String),
+          created_at: expect.any(Date),
           username: expect.any(String),
-          body: expect.any(String),
           difficulty: expect.any(Number),
           solved: expect.any(String),
           tech: expect.any(String),
-          created_at: expect.any(Date),
+          title: expect.any(String),
+          body: expect.any(String),
         })
       );
     });
@@ -78,16 +84,16 @@ describe("generateDevData.js", () => {
     const users = generateUserData(5);
     const problems = generateProblemData(10, users, tech);
     const suggestions = generateSuggestionData(5, problems, users);
-    suggestions.forEach((problem) => {
-      expect(problem).toEqual(
+    suggestions.forEach((suggestion) => {
+      expect(suggestion).toEqual(
         expect.objectContaining({
-          belongsTo: expect.any(String),
+          belongs_to: expect.any(String),
+          created_at: expect.any(Date),
           username: expect.any(String),
           body: expect.any(String),
-          approved: expect.any(String),
-          created_at: expect.any(Date),
         })
       );
+      expect(suggestion).toHaveProperty("approved_by");
     });
   });
 });

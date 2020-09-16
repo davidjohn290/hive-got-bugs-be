@@ -1,7 +1,6 @@
-const express = require("express")
-const techRouter = express.Router()
+const express = require("express");
+const techRouter = express.Router();
 
-techRouter.get("/", funcHere!)
+// techRouter.get("/", funcHere!)
 
-
-module.exports = techRouter
+module.exports = techRouter;
