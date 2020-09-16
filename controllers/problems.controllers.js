@@ -1,21 +1,10 @@
 const { selectProblems } = require("../models/problems.models");
 
-exports.getProblems = (req, res) => {
-  // const { tech, user, order, sort_by, } = req.query
-  selectProblems().then((problems) => {
-    res.status(200).send({ problems });
-  });
+exports.getProblems = (req, res, next) => {
+  const { sort_by, order, solved, tech, difficulty } = req.query;
+  selectProblems(sort_by, order, solved, tech, difficulty)
+    .then((problems) => {
+      res.status(200).send({ problems });
+    })
+    .catch(next);
 };
-
-// export.getProblemById = (req, res, next) => {
-//     const { problem_id } = req.params;
-
-//     selectProblemById(problem_id)
-//         .then((getProblemById) => {
-//             res.status(200).send({ problemById })
-//         })
-//         .catch((err) => {
-//             next(err)
-//         })
-
-// }
