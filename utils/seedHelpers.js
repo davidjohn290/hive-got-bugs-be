@@ -18,3 +18,15 @@ exports.replaceKey = (arr, ref, newKey, oldKey) => {
 
   return formattedObj;
 };
+
+exports.formatBooleans = (arr) => {
+  if (arr.length > 0) {
+    const newObj = { ...arr[0] };
+    const keys = Object.keys(newObj);
+    keys.forEach((key) => {
+      if (newObj[key] === "true") newObj[key] = true;
+      else if (newObj[key] === "false") newObj[key] = false;
+    });
+    return [newObj];
+  } else return [];
+};
