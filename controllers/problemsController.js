@@ -1,8 +1,10 @@
-// const { selectProblems, selectProblemById } = require("");
+const { selectProblems } = require("../models/problemsModels");
 
-exports.getProblems = () => {
-    // const { tech, user, order, sort_by, } = req.query
-    console.log("Calling from the controller");
+exports.getProblems = (req, res) => {
+  // const { tech, user, order, sort_by, } = req.query
+  selectProblems().then((problems) => {
+    res.status(200).send({ problems });
+  });
 };
 
 // export.getProblemById = (req, res, next) => {
