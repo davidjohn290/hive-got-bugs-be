@@ -1,6 +1,6 @@
 const express = require("express");
 const problemsRouter = express.Router();
-const { getProblems } = require("../controllers/problemsController");
+const { getProblems } = require("../controllers/problems.controllers");
 
 problemsRouter.get("/", getProblems);
 

@@ -1,4 +1,4 @@
-const { selectProblems } = require("../models/problemsModels");
+const { selectProblems } = require("../models/problems.models");
 
 exports.getProblems = (req, res) => {
   // const { tech, user, order, sort_by, } = req.query
