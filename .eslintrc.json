@@ -9,7 +9,9 @@
   "parserOptions": {
     "ecmaVersion": 12
   },
-  "rules": {},
+  "rules": {
+    "no-unexpected-multiline": 0
+  },
   "globals": {
     "process": "writable"
   }
