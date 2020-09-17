@@ -50,14 +50,20 @@ describe("generateDevData.js", () => {
             bug_points: expect.any(Number),
             bug_points_over_month: expect.any(Number),
             role: expect.any(String),
-            description: expect.toBeNull(),
-            github_url: expect.toBeNull(),
-            skill1: expect.toBeNull(),
-            skill2: expect.toBeNull(),
-            skill3: expect.toBeNull(),
-            skill4: expect.toBeNull(),
+            description: null,
+            github_url: null,
+            skill1: null,
+            skill2: null,
+            skill3: null,
+            skill4: null,
           })
         );
+        expect(user.description).toBeNull();
+        expect(user.github_url).toBeNull();
+        expect(user.skill1).toBeNull();
+        expect(user.skill2).toBeNull();
+        expect(user.skill3).toBeNull();
+        expect(user.skill4).toBeNull();
       }
     });
   });
