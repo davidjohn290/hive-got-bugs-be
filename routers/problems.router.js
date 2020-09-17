@@ -1,8 +1,9 @@
 const express = require("express");
 const problemsRouter = express.Router();
 const { getProblems } = require("../controllers/problems.controllers");
+const { handle405s } = require("../errors/");
 
-problemsRouter.get("/", getProblems);
+problemsRouter.route("/").get(getProblems).all(handle405s);
 
 // problemsRouter.get("/:user_id", funcHere!);
 
