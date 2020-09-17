@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watch --runInBand",
+    "test-all": "jest --runInBand",
     "format": "prettier --write .",
     "lint": "eslint --fix .",
     "setup-dbs": "psql -f ./db/setup.sql",
@@ -32,8 +33,13 @@
   "homepage": "https://github.com/davidjohn290/hive-got-bugs-be#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run format"
+      "pre-commit": "npm run lint && npm run format & npm run test-all"
     }
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-sorted"
+    ]
   },
   "dependencies": {
     "express": "^4.17.1",

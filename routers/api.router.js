@@ -1,9 +1,9 @@
 const express = require("express");
 const apiRouter = express.Router();
-const usersRouter = require("./usersRouter");
-const problemsRouter = require("./problemsRouter");
-const suggestionsRouter = require("./suggestionsRouter");
-const techRouter = require("./techRouter");
+const usersRouter = require("./users.router");
+const problemsRouter = require("./problems.router");
+const suggestionsRouter = require("./suggestions.router");
+const techRouter = require("./tech.router");
 
 apiRouter.use("/users", usersRouter);
 
