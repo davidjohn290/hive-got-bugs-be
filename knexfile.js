@@ -1,3 +1,4 @@
+const { DB_URL } = process.env;
 const ENV = process.env.NODE_ENV || "development";
 
 const baseConfig = {
@@ -20,6 +21,14 @@ const customConfig = {
   test: {
     connection: {
       database: "hive_got_bugs_test",
+    },
+  },
+  production: {
+    connection: {
+      connectionString: DB_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   },
 };
