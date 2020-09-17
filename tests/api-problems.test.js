@@ -109,7 +109,7 @@ describe("/api/problems", () => {
       });
       test("GET 200: filter by multiple columns", () => {
         return request(app)
-          .get("/api/problems/?solved=true&difficulty=0")
+          .get("/api/problems/?solved=true&difficulty=0&tech=Java")
           .expect(200)
           .then(({ body: { problems } }) => {
             expect(problems.length).toBe(1);
