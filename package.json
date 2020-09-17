@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watch --runInBand",
     "format": "prettier --write .",
     "lint": "eslint --fix .",
     "setup-dbs": "psql -f ./db/setup.sql",
