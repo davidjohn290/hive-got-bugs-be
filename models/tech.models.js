@@ -10,6 +10,7 @@ exports.selectTechBySlug = (techSlug) => {
         return Promise.reject({ status: 404, msg: "Tech not found!" });
       } else {
         const [tech] = result;
+
         return tech;
       }
     });
