@@ -24,7 +24,7 @@ const customConfig = {
   },
 };
 
-// Supress "FS-related option specified..." warning in console
+// Suppress "FS-related option specified..." warning in console
 const log = console.log;
 console.log = (...args) => {
   if (!/FsMigrations/.test(args[0])) log(...args);
