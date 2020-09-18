@@ -11,7 +11,9 @@ const {
 app.use(express.json());
 app.use("/api", apiRouter);
 
-app.all("/*", (req, res) => res.status(404).send({ msg: "Route not found!" }));
+app.all("/*", (req, res) => {
+  res.status(404).send({ msg: "Route not found!" });
+});
 
 app.use(handlePSQL400Errors);
 app.use(handlePSQL404Errors);
