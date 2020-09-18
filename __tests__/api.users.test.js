@@ -2,7 +2,7 @@ const app = require("../server");
 const request = require("supertest");
 const knex = require("../db/connection");
 
-describe("/api/problems", () => {
+describe("/api/users", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
   describe("GET", () => {
