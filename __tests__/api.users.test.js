@@ -93,10 +93,10 @@ describe("/api/users", () => {
           expect(updatedUser.description).toBe("I'm a brilliant coder.");
         });
     });
-    test("Error 400: responds with 400 error when passed an invalid username", () => {
+    test("Error 404: responds with 404 error when passed an invalid username", () => {
       return request(app)
         .get("/api/users/hello")
-        .expect(400)
+        .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Username does not exist");
         });

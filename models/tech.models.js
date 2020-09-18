@@ -15,3 +15,12 @@ exports.selectTechBySlug = (techSlug) => {
       }
     });
 };
+
+exports.selectAllTech = () => {
+  return knex
+    .select("*")
+    .from("tech")
+    .then((allTech) => {
+      return allTech;
+    });
+};

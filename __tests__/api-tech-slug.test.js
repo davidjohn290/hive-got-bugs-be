@@ -18,12 +18,20 @@ describe("/api/tech/:slug", () => {
           );
         });
     });
-    test("GET 404: tech not found", () => {
+    test("ERROR 404: tech not found", () => {
       return request(app)
         .get("/api/tech/notAPieceOfTech")
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Tech not found!");
+        });
+    });
+    test("GET 200: responds with all the tech objects", () => {
+      return request(app)
+        .get("/api/tech/")
+        .expect(200)
+        .then(({ body: { allTech } }) => {
+          expect(allTech.length).toBe(15);
         });
     });
   });
