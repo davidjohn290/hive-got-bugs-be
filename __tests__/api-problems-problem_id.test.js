@@ -21,6 +21,24 @@ describe.only("ProblemById", () => {
         expect(problemById).toHaveProperty("body");
       });
   });
+  test("GET 200: responds with all problem objects specific to the username", () => {
+    return request(app)
+      .get("/api/problems/user/Neal11")
+      .expect(200)
+      .then(({ body: { problems } }) => {
+        problems.forEach((problem) => {
+          expect(problem.username).toBe("Neal11");
+        });
+      });
+  });
+  test("ERROR 404: responds with 404 error when passed a non exist username", () => {
+    return request(app)
+      .get("/api/problems/user/bigFrank")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Username does not exist!");
+      });
+  });
 
   test("GET - status 200: response with the specified problem object", () => {
     return request(app)
@@ -31,16 +49,16 @@ describe.only("ProblemById", () => {
       });
   });
 
-  test.skip("Status 400: Invalid problem request", () => {
+  test("Status 400: Invalid problem request", () => {
     return request(app)
       .get("/api/problems/111110000")
-      .expect(400)
+      .expect(404)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("Bad request!");
+        expect(msg).toBe("Problem not found");
       });
   });
 
-  test.only("POST Status 201: returns a problem object containing the new problem", () => {
+  test("POST Status 201: returns a problem object containing the new problem", () => {
     return request(app)
       .post("/api/problems/new_problem")
       .send({
@@ -69,7 +87,7 @@ describe.only("ProblemById", () => {
         );
       });
   });
-  test.skip("Status 404: the requested problem does not exist", () => {
+  test("Status 404: the requested problem does not exist", () => {
     return request(app)
       .get("/api/problems/10000")
       .expect(404)
@@ -78,20 +96,15 @@ describe.only("ProblemById", () => {
       });
   });
 
-  test.skip("INVALID METHODS", () => {
-    const invalidMethods = ["patch", "post", "delete"];
-    const requests = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/problem/problem_id")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed.");
-        });
-    });
-
-    return Promise.all(requests);
+  test("ERROR 405", () => {
+    return request(app)
+      .post("/api/problems/023")
+      .expect(405)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Method not allowed!");
+      });
   });
-  test.only("DELETE: Status 204: - remove problem (of a given id) from the database", () => {
+  test("DELETE: Status 204: - remove problem (of a given id) from the database", () => {
     return request(app)
       .del("/api/problems/1")
       .expect(204)
@@ -99,7 +112,6 @@ describe.only("ProblemById", () => {
         return knex("problems").where("problem_id", 1);
       });
   });
-
   test("PUT Status 200: user is able to update a problem ", () => {
     return request(app)
       .patch("/api/problems/1")
@@ -123,6 +135,53 @@ describe.only("ProblemById", () => {
         expect(updatedProblem.body).toBe(
           "Sometimes the best way to get a feel for a problem."
         );
+      });
+  });
+  test("GET 200: responds with all the suggestion objects specific to the problem Id", () => {
+    return request(app)
+      .get("/api/problems/1/suggestions")
+      .expect(200)
+      .then(({ body: { suggestions } }) => {
+        console.log(suggestions);
+        suggestions.forEach((suggestion) => {
+          expect(suggestion.problem_id).toBe(1);
+        });
+      });
+  });
+  test("ERROR 404: responds with 404 error when given a non existent problem Id", () => {
+    return request(app)
+      .get("/api/problems/12323/suggestions")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Problem_id does not exist!");
+      });
+  });
+  test("POST 201: responds with the posted suggestion object", () => {
+    return request(app)
+      .post("/api/problems/1/suggestions")
+      .send({ username: "Neal11", body: "I think you should do this..." })
+      .expect(201)
+      .then(({ body: { newSuggestion } }) => {
+        expect(newSuggestion.username).toBe("Neal11");
+        expect(newSuggestion.problem_id).toBe(1);
+      });
+  });
+  test("ERROR 400: responds with 404 error when missing information", () => {
+    return request(app)
+      .post("/api/problems/1/suggestions")
+      .send({})
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad request!");
+      });
+  });
+  test("ERROR 404: responds with 404 error when given non existent problem Id", () => {
+    return request(app)
+      .post("/api/problems/122234/suggestions")
+      .send({ username: "Neal11", body: "What a good suggestion" })
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Value not found!");
       });
   });
 });

@@ -25,6 +25,14 @@ describe("/api/suggestions", () => {
         expect(msg).toBe("Suggestion Id not found!");
       });
   });
+  test("ERROR 400: responds with a 400 error when given a wrong suggestion Id", () => {
+    return request(app)
+      .del("/api/suggestions/suggestion1")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad request!");
+      });
+  });
   test("Error 405: responds with a 405 when a request uses an invalid method", () => {
     const invalidMethods = ["get", "post"];
     const methodPromises = invalidMethods.map((method) => {

@@ -26,6 +26,18 @@ exports.selectProblems = (
   }
 };
 
+exports.selectProblemsByUsername = (username) => {
+  return knex
+    .select("*")
+    .from("problems")
+    .where("username", username)
+    .then((problems) => {
+      if (problems.length === 0) {
+        return Promise.reject({ status: 404, msg: "Username does not exist!" });
+      } else return problems;
+    });
+};
+
 exports.selectProblemById = (problem_id) => {
   return knex
     .select("*")
@@ -80,12 +92,40 @@ exports.removeProblemById = (problem_id) => {
     .del()
     .returning("*")
     .then((deleted) => {
-      console.log(deleted);
       if (deleted === 0) {
         return Promise.reject({
           status: 404,
           msg: "Problem not found",
         });
       }
+    });
+};
+
+exports.selectSuggestionsById = (id) => {
+  return knex
+    .select("*")
+    .from("suggestions")
+    .where("problem_id", id)
+    .then((suggestions) => {
+      if (suggestions.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Problem_id does not exist!",
+        });
+      } else return suggestions;
+    });
+};
+
+exports.addSuggestionById = (id, { username, body }) => {
+  return knex("suggestions")
+    .where("problem_id", id)
+    .insert({
+      problem_id: id,
+      username: username,
+      body: body,
+    })
+    .returning("*")
+    .then((newSuggestion) => {
+      return newSuggestion[0];
     });
 };

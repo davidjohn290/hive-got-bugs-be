@@ -14,6 +14,4 @@ usersRouter.route("/:username").get(getUser).patch(patchNewUser);
 
 usersRouter.post("/new_user", postNewUser);
 
-// usersRouter.patch(":user_id/online_status", funcHere!);
-
 module.exports = usersRouter;

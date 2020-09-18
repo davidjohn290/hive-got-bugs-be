@@ -4,6 +4,9 @@ const {
   insertAProblem,
   removeProblemById,
   updateProblemById,
+  selectProblemsByUsername,
+  selectSuggestionsById,
+  addSuggestionById,
 } = require("../models/problems.models");
 const { selectTechBySlug } = require("../models/tech.models");
 
@@ -25,7 +28,17 @@ exports.getProblems = (req, res, next) => {
     .catch(next);
 };
 
+exports.getProblemsByUsername = (req, res, next) => {
+  const { username } = req.params;
+  selectProblemsByUsername(username)
+    .then((problems) => {
+      res.status(200).send({ problems });
+    })
+    .catch(next);
+};
+
 exports.getProblemById = (req, res, next) => {
+  console.log(req.params);
   const { problem_id } = req.params;
   selectProblemById(problem_id)
     .then((problemById) => {
@@ -60,6 +73,25 @@ exports.deleteProblemById = (req, res, next) => {
   removeProblemById(problem_id)
     .then(() => {
       res.sendStatus(204);
+    })
+    .catch(next);
+};
+
+exports.getSuggestionById = (req, res, next) => {
+  const { problem_id } = req.params;
+  selectSuggestionsById(problem_id)
+    .then((suggestions) => {
+      res.status(200).send({ suggestions });
+    })
+    .catch(next);
+};
+
+exports.postSuggestionById = (req, res, next) => {
+  const { problem_id } = req.params;
+  const { body } = req;
+  addSuggestionById(problem_id, body)
+    .then((newSuggestion) => {
+      res.status(201).send({ newSuggestion });
     })
     .catch(next);
 };
