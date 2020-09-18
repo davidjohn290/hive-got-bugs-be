@@ -91,14 +91,14 @@ describe.only("ProblemById", () => {
 
     return Promise.all(requests);
   });
-  // test.only("DELETE: Status 204: - remove problem (of a given id) from the database", () => {
-  //   return request(app)
-  //     .del("/api/problems/1")
-  //     .expect(204)
-  //     .then(() => {
-  //       return knex("problems").where("problem_id", 1);
-  //     });
-  // });
+  test.only("DELETE: Status 204: - remove problem (of a given id) from the database", () => {
+    return request(app)
+      .del("/api/problems/1")
+      .expect(204)
+      .then(() => {
+        return knex("problems").where("problem_id", 1);
+      });
+  });
 
   test("PUT Status 200: user is able to update a problem ", () => {
     return request(app)
