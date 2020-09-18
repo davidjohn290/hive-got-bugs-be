@@ -4,7 +4,8 @@ exports.up = function (knex) {
     suggestionsTable
       .integer("problem_id")
       .notNullable()
-      .references("problems.problem_id");
+      .references("problems.problem_id")
+      .onDelete("cascade");
     suggestionsTable.timestamp("created_at").defaultTo(knex.fn.now());
     suggestionsTable
       .string("username")
