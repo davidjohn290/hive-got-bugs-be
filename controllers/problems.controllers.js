@@ -4,8 +4,6 @@ const {
   insertAProblem,
   removeProblemById,
   updateProblemById,
-  selectSuggestionsById,
-  addSuggestionById,
 } = require("../models/problems.models");
 const { selectTechBySlug } = require("../models/tech.models");
 const { selectUserByUsername } = require("../models/users.models");
@@ -70,27 +68,6 @@ exports.deleteProblemById = (req, res, next) => {
   removeProblemById(problem_id)
     .then(() => {
       res.sendStatus(204);
-    })
-    .catch(next);
-};
-
-// Move to suggestions
-exports.getSuggestionByProblemId = (req, res, next) => {
-  const { problem_id } = req.params;
-  selectSuggestionsById(problem_id)
-    .then((suggestions) => {
-      res.status(200).send({ suggestions });
-    })
-    .catch(next);
-};
-
-// Move to suggestions
-exports.postSuggestionByProblemId = (req, res, next) => {
-  const { problem_id } = req.params;
-  const { body } = req;
-  addSuggestionById(problem_id, body)
-    .then((newSuggestion) => {
-      res.status(201).send({ newSuggestion });
     })
     .catch(next);
 };
