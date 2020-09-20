@@ -7,13 +7,12 @@ describe("/api/users", () => {
   afterAll(() => knex.destroy());
 
   describe("GET", () => {
-    // Refactor to use a query
-    test("GET 200: responds with an array of user objects", () => {
+    test("GET 200: responds with an array of users who are mentors (filter query)", () => {
       return request(app)
-        .get("/api/users/mentors")
+        .get("/api/users?role=mentor")
         .expect(200)
-        .then(({ body: { mentors } }) => {
-          expect(mentors).toEqual(
+        .then(({ body: { users } }) => {
+          expect(users).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 name: expect.any(String),
@@ -27,8 +26,8 @@ describe("/api/users", () => {
               }),
             ])
           );
-          mentors.forEach((mentor) => {
-            expect(mentor.role).toBe("mentor");
+          users.forEach((user) => {
+            expect(user.role).toBe("mentor");
           });
         });
     });

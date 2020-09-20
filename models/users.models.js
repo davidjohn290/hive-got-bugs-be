@@ -1,14 +1,14 @@
 const knex = require("../db/connection");
 
-exports.selectMentors = () => {
+exports.selectUsers = (role) => {
   return knex
     .select("*")
     .from("users")
-    .where("role", "mentor")
-    .then((mentors) => {
-      if (mentors.length === 0) {
-        return Promise.reject({ status: 400, msg: "Invalid Endpoint!" });
-      } else return mentors;
+    .where("role", role)
+    .then((users) => {
+      if (users.length === 0) {
+        return Promise.reject({ status: 400, msg: "Bad request!" });
+      } else return users;
     });
 };
 
