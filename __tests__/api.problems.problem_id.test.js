@@ -112,7 +112,7 @@ describe.only("ProblemById", () => {
         return knex("problems").where("problem_id", 1);
       });
   });
-  test("PUT Status 200: user is able to update a problem ", () => {
+  test("PATCH Status 200: user is able to update a problem ", () => {
     return request(app)
       .patch("/api/problems/1")
       .send({
