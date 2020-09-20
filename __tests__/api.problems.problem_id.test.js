@@ -142,7 +142,6 @@ describe.only("ProblemById", () => {
       .get("/api/problems/1/suggestions")
       .expect(200)
       .then(({ body: { suggestions } }) => {
-        console.log(suggestions);
         suggestions.forEach((suggestion) => {
           expect(suggestion.problem_id).toBe(1);
         });

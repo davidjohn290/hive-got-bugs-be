@@ -38,7 +38,6 @@ exports.getProblemsByUsername = (req, res, next) => {
 };
 
 exports.getProblemById = (req, res, next) => {
-  console.log(req.params);
   const { problem_id } = req.params;
   selectProblemById(problem_id)
     .then((problemById) => {
