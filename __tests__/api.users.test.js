@@ -31,9 +31,12 @@ describe("/api/users", () => {
           });
         });
     });
+  });
+
+  describe("POST", () => {
     test("POST 201: responds with the posted user object", () => {
       return request(app)
-        .post("/api/users/new_user")
+        .post("/api/users/")
         .send({
           username: "originalCoder",
           name: "John Smith",
@@ -66,7 +69,7 @@ describe("/api/users", () => {
     });
     test("POST 400: responds with a 400 error when missing data from a post request", () => {
       return request(app)
-        .post("/api/users/new_user")
+        .post("/api/users/")
         .send({
           username: "bigAl",
         })
@@ -77,7 +80,7 @@ describe("/api/users", () => {
     });
   });
 
-  test("Error 405: request uses an invalid method", () => {
+  test("405: request uses an invalid method", () => {
     const invalidMethods = ["patch", "put", "delete"];
     const methodPromises = invalidMethods.map((method) => {
       return request(app)

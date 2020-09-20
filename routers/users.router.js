@@ -8,11 +8,9 @@ const {
 } = require("../controllers/users.controllers");
 const { handle405s } = require("../errors");
 
-usersRouter.route("/").all(handle405s);
+usersRouter.route("/").post(postNewUser).all(handle405s);
 
 usersRouter.route("/mentors").get(getMentors).all(handle405s);
-
-usersRouter.route("/new_user").post(postNewUser).all(handle405s);
 
 usersRouter
   .route("/:username")
