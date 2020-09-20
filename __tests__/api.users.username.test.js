@@ -5,6 +5,7 @@ const knex = require("../db/connection");
 describe("/api/users/:username", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
+
   describe("GET", () => {
     test("GET 200: responds with a specific user object", () => {
       return request(app)
@@ -14,6 +15,17 @@ describe("/api/users/:username", () => {
           expect(user.username).toBe("Neal11");
         });
     });
+    test("GET 404: responds with 404 error when passed an invalid username", () => {
+      return request(app)
+        .get("/api/users/hello")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Username does not exist");
+        });
+    });
+  });
+
+  describe("PATCH", () => {
     test("PATCH 200: responds with the updated user object ", () => {
       return request(app)
         .patch("/api/users/Neal11")
@@ -36,15 +48,8 @@ describe("/api/users/:username", () => {
           expect(updatedUser.description).toBe("I'm a brilliant coder.");
         });
     });
-    test("Error 404: responds with 404 error when passed an invalid username", () => {
-      return request(app)
-        .get("/api/users/hello")
-        .expect(404)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Username does not exist");
-        });
-    });
-    test("Error 400: responds with a 400 error when trying to update a property that doesn't exist", () => {
+
+    test("PATCH 400: responds with a 400 error when trying to update a property that doesn't exist", () => {
       return request(app)
         .patch("/api/users/Neal11")
         .send({ points: 2 })
@@ -53,17 +58,18 @@ describe("/api/users/:username", () => {
           expect(msg).toBe("Bad request!");
         });
     });
-    test("Error 405: responds with a 405 when a request uses an invalid method", () => {
-      const invalidMethods = ["post", "put", "delete"];
-      const methodPromises = invalidMethods.map((method) => {
-        return request(app)
-          [method]("/api/users/Neal11")
-          .expect(405)
-          .then(({ body: { msg } }) => {
-            expect(msg).toBe("Method not allowed!");
-          });
-      });
-      return Promise.all(methodPromises);
+  });
+
+  test("Error 405: responds with a 405 when a request uses an invalid method", () => {
+    const invalidMethods = ["post", "put", "delete"];
+    const methodPromises = invalidMethods.map((method) => {
+      return request(app)
+        [method]("/api/users/Neal11")
+        .expect(405)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Method not allowed!");
+        });
     });
+    return Promise.all(methodPromises);
   });
 });

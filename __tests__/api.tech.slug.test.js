@@ -5,6 +5,7 @@ const knex = require("../db/connection");
 describe("/api/tech/:slug", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
+
   describe("GET", () => {
     test("GET 200: responds with a tech object ", () => {
       return request(app)
@@ -18,7 +19,7 @@ describe("/api/tech/:slug", () => {
           );
         });
     });
-    test("ERROR 404: tech not found", () => {
+    test("GET 404: tech not found", () => {
       return request(app)
         .get("/api/tech/notAPieceOfTech")
         .expect(404)
@@ -26,19 +27,18 @@ describe("/api/tech/:slug", () => {
           expect(msg).toBe("Tech not found!");
         });
     });
-    describe("INVALID METHODS", () => {
-      test("405: when request uses invalid method", () => {
-        const invalidMethods = ["put", "post", "patch", "delete"];
-        const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-            [method]("/api/tech/JavaScript")
-            .expect(405)
-            .then(({ body: { msg } }) => {
-              expect(msg).toBe("Method not allowed!");
-            });
+  });
+
+  test("405: request uses invalid method", () => {
+    const invalidMethods = ["put", "post", "patch", "delete"];
+    const methodPromises = invalidMethods.map((method) => {
+      return request(app)
+        [method]("/api/tech/JavaScript")
+        .expect(405)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Method not allowed!");
         });
-        return Promise.all(methodPromises);
-      });
     });
+    return Promise.all(methodPromises);
   });
 });

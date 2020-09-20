@@ -5,6 +5,7 @@ const knex = require("../db/connection");
 describe("/api/users", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
+
   describe("GET", () => {
     test("GET 200: responds with an array of user objects", () => {
       return request(app)
@@ -63,7 +64,7 @@ describe("/api/users", () => {
           expect(newUser[0].name).toBe("John Smith");
         });
     });
-    test("Error 400: responds with a 400 error when missing data from a post request", () => {
+    test("POST 400: responds with a 400 error when missing data from a post request", () => {
       return request(app)
         .post("/api/users/new_user")
         .send({
@@ -74,17 +75,18 @@ describe("/api/users", () => {
           expect(msg).toBe("Bad request!");
         });
     });
-    test("Error 405: responds with a 405 when a request uses an invalid method", () => {
-      const invalidMethods = ["post", "patch", "delete"];
-      const methodPromises = invalidMethods.map((method) => {
-        return request(app)
-          [method]("/api/users/")
-          .expect(405)
-          .then(({ body: { msg } }) => {
-            expect(msg).toBe("Method not allowed!");
-          });
-      });
-      return Promise.all(methodPromises);
+  });
+
+  test("Error 405: request uses an invalid method", () => {
+    const invalidMethods = ["patch", "put", "delete"];
+    const methodPromises = invalidMethods.map((method) => {
+      return request(app)
+        [method]("/api/users/")
+        .expect(405)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Method not allowed!");
+        });
     });
+    return Promise.all(methodPromises);
   });
 });

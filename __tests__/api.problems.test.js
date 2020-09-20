@@ -5,6 +5,7 @@ const knex = require("../db/connection");
 describe("/api/problems", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
+
   describe("GET", () => {
     test("GET 200: responds with an array of problem objects", () => {
       return request(app)
@@ -137,6 +138,7 @@ describe("/api/problems", () => {
       });
     });
   });
+
   describe("POST", () => {
     test("POST Status 201: returns a problem object containing the new problem", () => {
       return request(app)
@@ -168,6 +170,7 @@ describe("/api/problems", () => {
         });
     });
   });
+
   test("405: when request uses invalid method", () => {
     const invalidMethods = ["put", "patch", "delete"];
     const methodPromises = invalidMethods.map((method) => {
