@@ -52,14 +52,15 @@ describe("/api/users", () => {
           expect(newUser).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                name: expect.any(String),
-                username: expect.any(String),
-                role: expect.any(String),
+                name: "John Smith",
+                username: "originalCoder",
+                role: "user",
                 created_at: expect.any(String),
-                avatar_url: expect.any(String),
-                online_status: expect.any(String),
-                bug_points: expect.any(Number),
-                bug_points_over_month: expect.any(Number),
+                avatar_url:
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+                online_status: "offline",
+                bug_points: 0,
+                bug_points_over_month: 0,
               }),
             ])
           );
@@ -78,18 +79,21 @@ describe("/api/users", () => {
           expect(msg).toBe("Bad request!");
         });
     });
+    // TO do: POST 400 - data of wrong type in body
   });
 
-  test("405: request uses an invalid method", () => {
-    const invalidMethods = ["patch", "put", "delete"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/users/")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("405: request uses an invalid method", () => {
+      const invalidMethods = ["patch", "put", "delete"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/users/")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });

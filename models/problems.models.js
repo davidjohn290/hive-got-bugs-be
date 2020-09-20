@@ -35,7 +35,7 @@ exports.selectProblemById = (problem_id) => {
     .where("problems.problem_id", problem_id)
     .then((problem) => {
       if (problem.length === 0)
-        return Promise.reject({ status: 404, msg: "Problem not found" });
+        return Promise.reject({ status: 404, msg: "Problem not found!" });
       else {
         return problem[0];
       }

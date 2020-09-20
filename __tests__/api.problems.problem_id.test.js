@@ -7,12 +7,12 @@ describe("/api/problems/problem_id", () => {
   afterAll(() => knex.destroy());
 
   describe("GET", () => {
-    test("GET 200: response with the right problem object properties", () => {
+    test("GET 200: respond with specified problem object", () => {
       return request(app)
         .get("/api/problems/1")
         .expect(200)
         .then(({ body: { problemById } }) => {
-          expect(problemById).toHaveProperty("problem_id");
+          expect(problemById.problem_id).toBe(1);
           expect(problemById).toHaveProperty("created_at");
           expect(problemById).toHaveProperty("username");
           expect(problemById).toHaveProperty("difficulty");
@@ -23,30 +23,21 @@ describe("/api/problems/problem_id", () => {
         });
     });
 
-    test("GET 200: response with the specified problem object", () => {
-      return request(app)
-        .get("/api/problems/1")
-        .expect(200)
-        .then(({ body: { problemById } }) => {
-          expect(problemById.problem_id).toEqual(1);
-        });
-    });
-
-    test("GET 400: Invalid problem request", () => {
+    test("GET 404: Problem not found", () => {
       return request(app)
         .get("/api/problems/111110000")
         .expect(404)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Problem not found");
+          expect(msg).toBe("Problem not found!");
         });
     });
 
-    test("GET 404: the requested problem does not exist", () => {
+    test("GET 400: problem_id is wrong type", () => {
       return request(app)
-        .get("/api/problems/10000")
-        .expect(404)
+        .get("/api/problems/banana")
+        .expect(400)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Problem not found");
+          expect(msg).toBe("Bad request!");
         });
     });
   });
@@ -60,6 +51,8 @@ describe("/api/problems/problem_id", () => {
           return knex("problems").where("problem_id", 1);
         });
     });
+    // To do: DELETE 404 (problem_id not found)
+    // To do: DELETE 400 (problem_id is wrong type)
   });
 
   describe("PATCH", () => {
@@ -88,18 +81,24 @@ describe("/api/problems/problem_id", () => {
           );
         });
     });
+    // To do: PATCH 404 (problem_id not found)
+    // To do: PATCH 400 (problem_id is wrong type)
+    // To do: PATCH 400 (body has missing fields)
+    // To do: PATCH 400 (wrong type in body )
   });
 
-  test("405: request uses invalid method", () => {
-    const invalidMethods = ["put", "post"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/problems/1")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("405: request uses invalid method", () => {
+      const invalidMethods = ["put", "post"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/problems/1")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });

@@ -16,6 +16,10 @@ describe("/api/suggestions/:suggestion_id", () => {
           expect(updatedSuggestion.body).toBe("updated body for test!");
         });
     });
+    // To do: PATCH 404 - suggestion_id not found
+    // To do: PATCH 400 - suggestion_id wrong type
+    // To do: PATCH 400 - wrong type in body
+    // To do: PATCH 400 - trying to patch non-existent column
   });
 
   describe("DELETE", () => {
@@ -30,7 +34,7 @@ describe("/api/suggestions/:suggestion_id", () => {
           expect(msg).toBe("Suggestion Id not found!");
         });
     });
-    test("DELETE 400: responds with a 400 error when given a wrong suggestion Id", () => {
+    test("DELETE 400: responds with a 400 error when suggestion Id wrong type", () => {
       return request(app)
         .del("/api/suggestions/suggestion1")
         .expect(400)
@@ -40,16 +44,18 @@ describe("/api/suggestions/:suggestion_id", () => {
     });
   });
 
-  test("405: request uses invalid method", () => {
-    const invalidMethods = ["get", "post", "put"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/suggestions/16")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("405: request uses invalid method", () => {
+      const invalidMethods = ["get", "post", "put"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/suggestions/16")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });

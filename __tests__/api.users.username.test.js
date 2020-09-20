@@ -48,7 +48,6 @@ describe("/api/users/:username", () => {
           expect(updatedUser.description).toBe("I'm a brilliant coder.");
         });
     });
-
     test("PATCH 400: responds with a 400 error when trying to update a property that doesn't exist", () => {
       return request(app)
         .patch("/api/users/Neal11")
@@ -58,18 +57,21 @@ describe("/api/users/:username", () => {
           expect(msg).toBe("Bad request!");
         });
     });
+    // To do: PATCH 400: wrong type in body
   });
 
-  test("Error 405: responds with a 405 when a request uses an invalid method", () => {
-    const invalidMethods = ["post", "put", "delete"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/users/Neal11")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("Error 405: responds with a 405 when a request uses an invalid method", () => {
+      const invalidMethods = ["post", "put", "delete"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/users/Neal11")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });

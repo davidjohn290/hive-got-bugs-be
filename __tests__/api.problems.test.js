@@ -195,18 +195,23 @@ describe("/api/problems", () => {
           );
         });
     });
+    // To do: POST 400 - Missing required fields in body
+    // To do: POST 400 - Wrong type in body
+    // To do: POST 400 - Trying to add non-existent column
   });
 
-  test("405: when request uses invalid method", () => {
-    const invalidMethods = ["put", "patch", "delete"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/problems")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("405: when request uses invalid method", () => {
+      const invalidMethods = ["put", "patch", "delete"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/problems")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });

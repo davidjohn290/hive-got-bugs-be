@@ -25,6 +25,7 @@ describe("/api/problems/:problem_id/suggestions", () => {
           expect(msg).toBe("Problem_id does not exist!");
         });
     });
+    // TODO: GET 400: problem_id is wrong type
   });
 
   describe("POST", () => {
@@ -38,7 +39,7 @@ describe("/api/problems/:problem_id/suggestions", () => {
           expect(newSuggestion.problem_id).toBe(1);
         });
     });
-    test("POST 400: responds with 404 error when missing information", () => {
+    test("POST 400: missing information", () => {
       return request(app)
         .post("/api/problems/1/suggestions")
         .send({})
@@ -56,18 +57,21 @@ describe("/api/problems/:problem_id/suggestions", () => {
           expect(msg).toBe("Value not found!");
         });
     });
+    // TODO: GET 400: problem_id is wrong type
   });
 
-  test("405: when request uses invalid method", () => {
-    const invalidMethods = ["put", "patch", "delete"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/problems")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("405: when request uses invalid method", () => {
+      const invalidMethods = ["put", "patch", "delete"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/problems")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });

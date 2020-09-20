@@ -17,16 +17,18 @@ describe("/api/tech", () => {
     });
   });
 
-  test("405: request uses invalid method", () => {
-    const invalidMethods = ["put", "post", "patch", "delete"];
-    const methodPromises = invalidMethods.map((method) => {
-      return request(app)
-        [method]("/api/tech")
-        .expect(405)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Method not allowed!");
-        });
+  describe("INVALID METHODS", () => {
+    test("405: request uses invalid method", () => {
+      const invalidMethods = ["put", "post", "patch", "delete"];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]("/api/tech")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Method not allowed!");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    return Promise.all(methodPromises);
   });
 });
