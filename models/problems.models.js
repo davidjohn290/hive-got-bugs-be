@@ -6,7 +6,8 @@ exports.selectProblems = (
   order = "desc",
   solved,
   difficulty,
-  tech
+  tech,
+  username
 ) => {
   if (order !== "asc" && order !== "desc") {
     return Promise.reject({ status: 400, msg: "Invalid problem request" });
@@ -19,23 +20,12 @@ exports.selectProblems = (
         if (solved !== undefined) query.where("solved", "=", solved);
         if (difficulty) query.where("difficulty", "=", difficulty);
         if (tech) query.where("tech", "=", tech);
+        if (username) query.where("username", "=", username);
       })
       .then((problems) => {
         return formatBooleans(problems);
       });
   }
-};
-
-exports.selectProblemsByUsername = (username) => {
-  return knex
-    .select("*")
-    .from("problems")
-    .where("username", username)
-    .then((problems) => {
-      if (problems.length === 0) {
-        return Promise.reject({ status: 404, msg: "Username does not exist!" });
-      } else return problems;
-    });
 };
 
 exports.selectProblemById = (problem_id) => {

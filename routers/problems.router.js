@@ -6,15 +6,12 @@ const {
   addAProblem,
   patchProblemById,
   deleteProblemById,
-  getProblemsByUsername,
-  getSuggestionById,
-  postSuggestionById,
+  getSuggestionByProblemId,
+  postSuggestionByProblemId,
 } = require("../controllers/problems.controllers");
 const { handle405s } = require("../errors/");
 
 problemsRouter.route("/").get(getProblems).post(addAProblem).all(handle405s);
-
-problemsRouter.get("/user/:username", getProblemsByUsername);
 
 problemsRouter
   .route("/:problem_id")
@@ -25,7 +22,7 @@ problemsRouter
 
 problemsRouter
   .route("/:problem_id/suggestions")
-  .get(getSuggestionById)
-  .post(postSuggestionById);
+  .get(getSuggestionByProblemId)
+  .post(postSuggestionByProblemId);
 
 module.exports = problemsRouter;

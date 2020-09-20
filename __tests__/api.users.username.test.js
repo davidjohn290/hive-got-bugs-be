@@ -20,7 +20,7 @@ describe("/api/users/:username", () => {
         .get("/api/users/hello")
         .expect(404)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Username does not exist");
+          expect(msg).toBe("User does not exist!");
         });
     });
   });

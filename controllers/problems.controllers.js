@@ -4,33 +4,31 @@ const {
   insertAProblem,
   removeProblemById,
   updateProblemById,
-  selectProblemsByUsername,
   selectSuggestionsById,
   addSuggestionById,
 } = require("../models/problems.models");
 const { selectTechBySlug } = require("../models/tech.models");
+const { selectUserByUsername } = require("../models/users.models");
 
 exports.getProblems = (req, res, next) => {
-  const { sort_by, order, solved, difficulty, tech } = req.query;
+  const { sort_by, order, solved, difficulty, tech, username } = req.query;
+
   let checkDB;
 
-  if (tech) {
+  if (tech && !username) {
     checkDB = selectTechBySlug(tech);
+  } else if (username && !tech) {
+    checkDB = selectUserByUsername(username);
+  } else if (tech && username) {
+    checkDB = selectTechBySlug(tech).then(() => {
+      return selectUserByUsername(username);
+    });
   } else checkDB = Promise.resolve();
 
   checkDB
     .then(() => {
-      return selectProblems(sort_by, order, solved, difficulty, tech);
+      return selectProblems(sort_by, order, solved, difficulty, tech, username);
     })
-    .then((problems) => {
-      res.status(200).send({ problems });
-    })
-    .catch(next);
-};
-
-exports.getProblemsByUsername = (req, res, next) => {
-  const { username } = req.params;
-  selectProblemsByUsername(username)
     .then((problems) => {
       res.status(200).send({ problems });
     })
@@ -76,7 +74,8 @@ exports.deleteProblemById = (req, res, next) => {
     .catch(next);
 };
 
-exports.getSuggestionById = (req, res, next) => {
+// Move to suggestions
+exports.getSuggestionByProblemId = (req, res, next) => {
   const { problem_id } = req.params;
   selectSuggestionsById(problem_id)
     .then((suggestions) => {
@@ -85,7 +84,8 @@ exports.getSuggestionById = (req, res, next) => {
     .catch(next);
 };
 
-exports.postSuggestionById = (req, res, next) => {
+// Move to suggestions
+exports.postSuggestionByProblemId = (req, res, next) => {
   const { problem_id } = req.params;
   const { body } = req;
   addSuggestionById(problem_id, body)

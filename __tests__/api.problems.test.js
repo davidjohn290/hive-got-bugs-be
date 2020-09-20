@@ -108,6 +108,16 @@ describe("/api/problems", () => {
             });
           });
       });
+      test("GET 200: filter by username", () => {
+        return request(app)
+          .get("/api/problems?username=Neal11")
+          .expect(200)
+          .then(({ body: { problems } }) => {
+            problems.forEach((problem) => {
+              expect(problem.username).toBe("Neal11");
+            });
+          });
+      });
       test("GET 200: filter by multiple columns", () => {
         return request(app)
           .get("/api/problems/?solved=true&difficulty=0&tech=Java")
@@ -131,6 +141,22 @@ describe("/api/problems", () => {
       test("GET 200: tech exists but no results", () => {
         return request(app)
           .get("/api/problems?tech=Python")
+          .expect(200)
+          .then(({ body: { problems } }) => {
+            expect(problems.length).toBe(0);
+          });
+      });
+      test("GET 404: user does not exist", () => {
+        return request(app)
+          .get("/api/problems?username=bigFrank")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("User does not exist!");
+          });
+      });
+      test("GET 200: user exists but no results", () => {
+        return request(app)
+          .get("/api/problems?username=lurker")
           .expect(200)
           .then(({ body: { problems } }) => {
             expect(problems.length).toBe(0);
