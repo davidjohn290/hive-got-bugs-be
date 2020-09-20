@@ -44,14 +44,7 @@ exports.selectProblemById = (problem_id) => {
 
 exports.insertAProblem = (body) => {
   return knex("problems")
-    .insert({
-      username: body.username,
-      difficulty: body.difficulty,
-      solved: body.solved,
-      tech: body.tech,
-      title: body.title,
-      body: body.body,
-    })
+    .insert(body)
     .where("username", body.username)
     .returning("*")
     .then((body) => {
@@ -61,18 +54,16 @@ exports.insertAProblem = (body) => {
 };
 
 exports.updateProblemById = (body, id) => {
-  const propertyToUpdate = Object.keys(body)[0];
-  const newValue = body[propertyToUpdate];
   return knex
     .select("*")
     .from("problems")
     .where("problem_id", id)
-    .update({
-      [propertyToUpdate]: newValue,
-    })
+    .update(body)
     .returning("*")
     .then((updatedProblem) => {
-      return updatedProblem[0];
+      if (updatedProblem.length === 0) {
+        return Promise.reject({ status: 404, msg: "Problem not found!" });
+      } else return updatedProblem[0];
     });
 };
 
@@ -83,10 +74,10 @@ exports.removeProblemById = (problem_id) => {
     .del()
     .returning("*")
     .then((deleted) => {
-      if (deleted === 0) {
+      if (deleted.length === 0) {
         return Promise.reject({
           status: 404,
-          msg: "Problem not found",
+          msg: "Problem not found!",
         });
       }
     });

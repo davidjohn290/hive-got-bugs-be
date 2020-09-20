@@ -10,8 +10,8 @@ exports.updateSuggestionById = (id, body) => {
     .update({ [propertyToChange]: newValue })
     .returning("*")
     .then((updatedSuggestion) => {
-      if (updatedSuggestion === 0)
-        return Promise.reject({ status: 404, msg: "Suggestion Id not found!" });
+      if (updatedSuggestion.length === 0)
+        return Promise.reject({ status: 404, msg: "Suggestion not found!" });
       else return updatedSuggestion[0];
     });
 };

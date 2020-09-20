@@ -24,67 +24,31 @@ exports.selectUserByUsername = (username) => {
     });
 };
 
-exports.addNewUser = ({
-  username,
-  name,
-  avatar_url,
-  online_status,
-  bug_points,
-  bug_points_over_month,
-  role,
-}) => {
+exports.addNewUser = (body) => {
   return knex("users")
-    .insert({
-      username: username,
-      name: name,
-      avatar_url: avatar_url,
-      online_status: online_status,
-      bug_points: bug_points,
-      bug_points_over_month: bug_points_over_month,
-      role: role,
-    })
+    .insert(body)
     .returning("*")
     .then((newUser) => {
-      if (newUser.role === "user") {
-        delete newUser.description;
-        delete newUser.github_url;
-        delete newUser.skills1;
-        delete newUser.skills2;
-        delete newUser.skills3;
-        delete newUser.skills4;
-        return newUser;
-      } else return newUser;
+      return newUser[0];
     });
 };
 
-exports.updateUserByUsername = (propertyUpdating, username) => {
-  return knex("users")
+exports.updateUserByUsername = (body, username) => {
+  return knex
+    .select("*")
+    .from("users")
     .where("username", username)
     .modify((query) => {
-      const userProperty = Object.keys(propertyUpdating)[0];
-      const newValue = propertyUpdating[userProperty];
-      if (propertyUpdating.role === "mentor") {
-        query.update({
-          description: propertyUpdating.description,
-          github_url: propertyUpdating.github_url,
-          skills1: propertyUpdating.skills1,
-          skills2: propertyUpdating.skills2,
-          skills3: propertyUpdating.skills3,
-        });
-      }
-      if (
-        userProperty === "bug_points" ||
-        userProperty === "bug_points_over_month"
-      ) {
-        query.increment(userProperty, newValue);
-      } else if (Object.keys(propertyUpdating).length === 1) {
-        query.update({
-          [userProperty]: newValue,
-        });
-      }
+      if (body.inc_bug_points !== undefined) {
+        const { inc_bug_points, ...rest } = body;
+        query.increment("bug_points", inc_bug_points);
+        query.update(rest);
+      } else query.update(body);
     })
     .returning("*")
     .then((updatedUser) => {
-      return updatedUser[0];
+      if (updatedUser.length === 0) {
+        return Promise.reject({ status: 404, msg: "User not found!" });
+      } else return updatedUser[0];
     });
 };

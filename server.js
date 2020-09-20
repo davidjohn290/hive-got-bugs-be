@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const {
   handlePSQL400Errors,
-  handlePSQL404Errors,
+  handlePSQL422Errors,
   handleCustomErrors,
   handle500s,
 } = require("./errors/");
@@ -20,7 +20,7 @@ app.all("/*", (req, res) => {
 });
 
 app.use(handlePSQL400Errors);
-app.use(handlePSQL404Errors);
+app.use(handlePSQL422Errors);
 app.use(handleCustomErrors);
 app.use(handle500s);
 
