@@ -137,6 +137,37 @@ describe("/api/problems", () => {
       });
     });
   });
+  describe("POST", () => {
+    test("POST Status 201: returns a problem object containing the new problem", () => {
+      return request(app)
+        .post("/api/problems/new_problem")
+        .send({
+          username: "Neal11",
+          difficulty: 2,
+          solved: false,
+          tech: "JavaScript",
+          title: "How to discard local file modifications in git",
+          body:
+            "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
+        })
+        .expect(201)
+        .then(({ body: { newProblem } }) => {
+          expect(newProblem).toEqual(
+            expect.objectContaining({
+              problem_id: expect.any(Number),
+              username: "Neal11",
+              difficulty: 2,
+              created_at: expect.any(String),
+              solved: false,
+              tech: "JavaScript",
+              title: "How to discard local file modifications in git",
+              body:
+                "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
+            })
+          );
+        });
+    });
+  });
   test("405: when request uses invalid method", () => {
     const invalidMethods = ["put", "patch", "delete"];
     const methodPromises = invalidMethods.map((method) => {

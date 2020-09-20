@@ -2,7 +2,7 @@ const app = require("../server");
 const request = require("supertest");
 const knex = require("../db/connection");
 
-describe.only("ProblemById", () => {
+describe("/api/problems/problem_id", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
 
@@ -19,24 +19,6 @@ describe.only("ProblemById", () => {
         expect(problemById).toHaveProperty("tech");
         expect(problemById).toHaveProperty("title");
         expect(problemById).toHaveProperty("body");
-      });
-  });
-  test("GET 200: responds with all problem objects specific to the username", () => {
-    return request(app)
-      .get("/api/problems/user/Neal11")
-      .expect(200)
-      .then(({ body: { problems } }) => {
-        problems.forEach((problem) => {
-          expect(problem.username).toBe("Neal11");
-        });
-      });
-  });
-  test("ERROR 404: responds with 404 error when passed a non exist username", () => {
-    return request(app)
-      .get("/api/problems/user/bigFrank")
-      .expect(404)
-      .then(({ body: { msg } }) => {
-        expect(msg).toBe("Username does not exist!");
       });
   });
 
@@ -58,35 +40,6 @@ describe.only("ProblemById", () => {
       });
   });
 
-  test("POST Status 201: returns a problem object containing the new problem", () => {
-    return request(app)
-      .post("/api/problems/new_problem")
-      .send({
-        username: "Neal11",
-        difficulty: 2,
-        solved: false,
-        tech: "JavaScript",
-        title: "How to discard local file modifications in git",
-        body:
-          "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
-      })
-      .expect(201)
-      .then(({ body: { newProblem } }) => {
-        expect(newProblem).toEqual(
-          expect.objectContaining({
-            problem_id: expect.any(Number),
-            username: "Neal11",
-            difficulty: 2,
-            created_at: expect.any(String),
-            solved: false,
-            tech: "JavaScript",
-            title: "How to discard local file modifications in git",
-            body:
-              "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
-          })
-        );
-      });
-  });
   test("Status 404: the requested problem does not exist", () => {
     return request(app)
       .get("/api/problems/10000")
@@ -135,52 +88,6 @@ describe.only("ProblemById", () => {
         expect(updatedProblem.body).toBe(
           "Sometimes the best way to get a feel for a problem."
         );
-      });
-  });
-  test("GET 200: responds with all the suggestion objects specific to the problem Id", () => {
-    return request(app)
-      .get("/api/problems/1/suggestions")
-      .expect(200)
-      .then(({ body: { suggestions } }) => {
-        suggestions.forEach((suggestion) => {
-          expect(suggestion.problem_id).toBe(1);
-        });
-      });
-  });
-  test("ERROR 404: responds with 404 error when given a non existent problem Id", () => {
-    return request(app)
-      .get("/api/problems/12323/suggestions")
-      .expect(404)
-      .then(({ body: { msg } }) => {
-        expect(msg).toBe("Problem_id does not exist!");
-      });
-  });
-  test("POST 201: responds with the posted suggestion object", () => {
-    return request(app)
-      .post("/api/problems/1/suggestions")
-      .send({ username: "Neal11", body: "I think you should do this..." })
-      .expect(201)
-      .then(({ body: { newSuggestion } }) => {
-        expect(newSuggestion.username).toBe("Neal11");
-        expect(newSuggestion.problem_id).toBe(1);
-      });
-  });
-  test("ERROR 400: responds with 404 error when missing information", () => {
-    return request(app)
-      .post("/api/problems/1/suggestions")
-      .send({})
-      .expect(400)
-      .then(({ body: { msg } }) => {
-        expect(msg).toBe("Bad request!");
-      });
-  });
-  test("ERROR 404: responds with 404 error when given non existent problem Id", () => {
-    return request(app)
-      .post("/api/problems/122234/suggestions")
-      .send({ username: "Neal11", body: "What a good suggestion" })
-      .expect(404)
-      .then(({ body: { msg } }) => {
-        expect(msg).toBe("Value not found!");
       });
   });
 });

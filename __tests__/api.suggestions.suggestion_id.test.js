@@ -2,7 +2,7 @@ const app = require("../server");
 const request = require("supertest");
 const knex = require("../db/connection");
 
-describe("/api/suggestions", () => {
+describe("/api/suggestions/:suggestion_id", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
   test("PATCH 200: responds with the updated suggestion object", () => {

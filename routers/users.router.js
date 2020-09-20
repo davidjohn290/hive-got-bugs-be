@@ -8,10 +8,16 @@ const {
 } = require("../controllers/users.controllers");
 const { handle405s } = require("../errors");
 
+usersRouter.route("/").all(handle405s);
+
 usersRouter.route("/mentors").get(getMentors).all(handle405s);
 
-usersRouter.route("/:username").get(getUser).patch(patchNewUser);
+usersRouter.route("/new_user").post(postNewUser).all(handle405s);
 
-usersRouter.post("/new_user", postNewUser);
+usersRouter
+  .route("/:username")
+  .get(getUser)
+  .patch(patchNewUser)
+  .all(handle405s);
 
 module.exports = usersRouter;
