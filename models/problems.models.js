@@ -10,7 +10,7 @@ exports.selectProblems = (
   username
 ) => {
   if (order !== "asc" && order !== "desc") {
-    return Promise.reject({ status: 400, msg: "Invalid problem request" });
+    return Promise.reject({ status: 400, msg: "Bad request!" });
   } else {
     return knex
       .select("*")
