@@ -6,10 +6,11 @@ exports.selectProblems = (
   order = "desc",
   solved,
   difficulty,
-  tech
+  tech,
+  username
 ) => {
   if (order !== "asc" && order !== "desc") {
-    return Promise.reject({ status: 400, msg: "Invalid problem request" });
+    return Promise.reject({ status: 400, msg: "Bad request!" });
   } else {
     return knex
       .select("*")
@@ -19,23 +20,12 @@ exports.selectProblems = (
         if (solved !== undefined) query.where("solved", "=", solved);
         if (difficulty) query.where("difficulty", "=", difficulty);
         if (tech) query.where("tech", "=", tech);
+        if (username) query.where("username", "=", username);
       })
       .then((problems) => {
         return formatBooleans(problems);
       });
   }
-};
-
-exports.selectProblemsByUsername = (username) => {
-  return knex
-    .select("*")
-    .from("problems")
-    .where("username", username)
-    .then((problems) => {
-      if (problems.length === 0) {
-        return Promise.reject({ status: 404, msg: "Username does not exist!" });
-      } else return problems;
-    });
 };
 
 exports.selectProblemById = (problem_id) => {
@@ -45,7 +35,7 @@ exports.selectProblemById = (problem_id) => {
     .where("problems.problem_id", problem_id)
     .then((problem) => {
       if (problem.length === 0)
-        return Promise.reject({ status: 404, msg: "Problem not found" });
+        return Promise.reject({ status: 404, msg: "Problem not found!" });
       else {
         return problem[0];
       }
@@ -54,14 +44,7 @@ exports.selectProblemById = (problem_id) => {
 
 exports.insertAProblem = (body) => {
   return knex("problems")
-    .insert({
-      username: body.username,
-      difficulty: body.difficulty,
-      solved: body.solved,
-      tech: body.tech,
-      title: body.title,
-      body: body.body,
-    })
+    .insert(body)
     .where("username", body.username)
     .returning("*")
     .then((body) => {
@@ -71,20 +54,19 @@ exports.insertAProblem = (body) => {
 };
 
 exports.updateProblemById = (body, id) => {
-  const propertyToUpdate = Object.keys(body)[0];
-  const newValue = body[propertyToUpdate];
   return knex
     .select("*")
     .from("problems")
     .where("problem_id", id)
-    .update({
-      [propertyToUpdate]: newValue,
-    })
+    .update(body)
     .returning("*")
     .then((updatedProblem) => {
-      return updatedProblem[0];
+      if (updatedProblem.length === 0) {
+        return Promise.reject({ status: 404, msg: "Problem not found!" });
+      } else return updatedProblem[0];
     });
 };
+
 exports.removeProblemById = (problem_id) => {
   return knex("*")
     .from("problems")
@@ -92,40 +74,11 @@ exports.removeProblemById = (problem_id) => {
     .del()
     .returning("*")
     .then((deleted) => {
-      if (deleted === 0) {
+      if (deleted.length === 0) {
         return Promise.reject({
           status: 404,
-          msg: "Problem not found",
+          msg: "Problem not found!",
         });
       }
-    });
-};
-
-exports.selectSuggestionsById = (id) => {
-  return knex
-    .select("*")
-    .from("suggestions")
-    .where("problem_id", id)
-    .then((suggestions) => {
-      if (suggestions.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: "Problem_id does not exist!",
-        });
-      } else return suggestions;
-    });
-};
-
-exports.addSuggestionById = (id, { username, body }) => {
-  return knex("suggestions")
-    .where("problem_id", id)
-    .insert({
-      problem_id: id,
-      username: username,
-      body: body,
-    })
-    .returning("*")
-    .then((newSuggestion) => {
-      return newSuggestion[0];
     });
 };

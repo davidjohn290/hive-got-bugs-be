@@ -4,33 +4,29 @@ const {
   insertAProblem,
   removeProblemById,
   updateProblemById,
-  selectProblemsByUsername,
-  selectSuggestionsById,
-  addSuggestionById,
 } = require("../models/problems.models");
 const { selectTechBySlug } = require("../models/tech.models");
+const { selectUserByUsername } = require("../models/users.models");
 
 exports.getProblems = (req, res, next) => {
-  const { sort_by, order, solved, difficulty, tech } = req.query;
+  const { sort_by, order, solved, difficulty, tech, username } = req.query;
+
   let checkDB;
 
-  if (tech) {
+  if (tech && !username) {
     checkDB = selectTechBySlug(tech);
+  } else if (username && !tech) {
+    checkDB = selectUserByUsername(username);
+  } else if (tech && username) {
+    checkDB = selectTechBySlug(tech).then(() => {
+      return selectUserByUsername(username);
+    });
   } else checkDB = Promise.resolve();
 
   checkDB
     .then(() => {
-      return selectProblems(sort_by, order, solved, difficulty, tech);
+      return selectProblems(sort_by, order, solved, difficulty, tech, username);
     })
-    .then((problems) => {
-      res.status(200).send({ problems });
-    })
-    .catch(next);
-};
-
-exports.getProblemsByUsername = (req, res, next) => {
-  const { username } = req.params;
-  selectProblemsByUsername(username)
     .then((problems) => {
       res.status(200).send({ problems });
     })
@@ -38,11 +34,10 @@ exports.getProblemsByUsername = (req, res, next) => {
 };
 
 exports.getProblemById = (req, res, next) => {
-  console.log(req.params);
   const { problem_id } = req.params;
   selectProblemById(problem_id)
-    .then((problemById) => {
-      res.status(200).send({ problemById });
+    .then((problem) => {
+      res.status(200).send({ problem });
     })
     .catch((err) => {
       next(err);
@@ -51,7 +46,7 @@ exports.getProblemById = (req, res, next) => {
 
 exports.addAProblem = (req, res, next) => {
   insertAProblem(req.body)
-    .then((newProblem) => res.status(201).send({ newProblem }))
+    .then((problem) => res.status(201).send({ problem }))
     .catch((err) => {
       next(err);
     });
@@ -61,8 +56,8 @@ exports.patchProblemById = (req, res, next) => {
   const { body } = req;
   const { problem_id } = req.params;
   updateProblemById(body, problem_id)
-    .then((updatedProblem) => {
-      res.status(200).send({ updatedProblem });
+    .then((problem) => {
+      res.status(200).send({ problem });
     })
     .catch(next);
 };
@@ -73,25 +68,6 @@ exports.deleteProblemById = (req, res, next) => {
   removeProblemById(problem_id)
     .then(() => {
       res.sendStatus(204);
-    })
-    .catch(next);
-};
-
-exports.getSuggestionById = (req, res, next) => {
-  const { problem_id } = req.params;
-  selectSuggestionsById(problem_id)
-    .then((suggestions) => {
-      res.status(200).send({ suggestions });
-    })
-    .catch(next);
-};
-
-exports.postSuggestionById = (req, res, next) => {
-  const { problem_id } = req.params;
-  const { body } = req;
-  addSuggestionById(problem_id, body)
-    .then((newSuggestion) => {
-      res.status(201).send({ newSuggestion });
     })
     .catch(next);
 };

@@ -5,6 +5,7 @@ const knex = require("../db/connection");
 describe("/api/tech/:slug", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
+
   describe("GET", () => {
     test("GET 200: responds with a tech object ", () => {
       return request(app)
@@ -18,7 +19,7 @@ describe("/api/tech/:slug", () => {
           );
         });
     });
-    test("ERROR 404: tech not found", () => {
+    test("GET 404: tech not found", () => {
       return request(app)
         .get("/api/tech/notAPieceOfTech")
         .expect(404)
@@ -26,17 +27,10 @@ describe("/api/tech/:slug", () => {
           expect(msg).toBe("Tech not found!");
         });
     });
-    test("GET 200: responds with all the tech objects", () => {
-      return request(app)
-        .get("/api/tech/")
-        .expect(200)
-        .then(({ body: { allTech } }) => {
-          expect(allTech.length).toBe(15);
-        });
-    });
   });
+
   describe("INVALID METHODS", () => {
-    test("405: when request uses invalid method", () => {
+    test("405: request uses invalid method", () => {
       const invalidMethods = ["put", "post", "patch", "delete"];
       const methodPromises = invalidMethods.map((method) => {
         return request(app)

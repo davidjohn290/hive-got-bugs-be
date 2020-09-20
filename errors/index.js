@@ -1,15 +1,18 @@
 // Error-handling middleware
 exports.handlePSQL400Errors = (err, req, res, next) => {
   const psqlCodes = ["22P02", "23502", "42703"];
-  if (psqlCodes.includes(err.code)) {
+  if (
+    psqlCodes.includes(err.code) ||
+    err.toString().includes("Empty .update() call detected!")
+  ) {
     res.status(400).send({ msg: "Bad request!" });
   } else next(err);
 };
 
-exports.handlePSQL404Errors = (err, req, res, next) => {
+exports.handlePSQL422Errors = (err, req, res, next) => {
   const psqlCodes = ["23503"];
   if (psqlCodes.includes(err.code)) {
-    res.status(404).send({ msg: "Value not found!" });
+    res.status(422).send({ msg: "Unprocessable entity!" });
   } else next(err);
 };
 

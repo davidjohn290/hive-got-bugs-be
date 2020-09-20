@@ -1,22 +1,22 @@
 const express = require("express");
 const problemsRouter = express.Router();
+
 const {
   getProblems,
   getProblemById,
   addAProblem,
   patchProblemById,
   deleteProblemById,
-  getProblemsByUsername,
-  getSuggestionById,
-  postSuggestionById,
 } = require("../controllers/problems.controllers");
+
+const {
+  getSuggestionByProblemId,
+  postSuggestionByProblemId,
+} = require("../controllers/suggestions.controllers");
+
 const { handle405s } = require("../errors/");
 
-problemsRouter.route("/").get(getProblems).all(handle405s);
-
-problemsRouter.get("/user/:username", getProblemsByUsername);
-
-problemsRouter.post("/new_problem", addAProblem).all(handle405s);
+problemsRouter.route("/").get(getProblems).post(addAProblem).all(handle405s);
 
 problemsRouter
   .route("/:problem_id")
@@ -27,7 +27,7 @@ problemsRouter
 
 problemsRouter
   .route("/:problem_id/suggestions")
-  .get(getSuggestionById)
-  .post(postSuggestionById);
+  .get(getSuggestionByProblemId)
+  .post(postSuggestionByProblemId);
 
 module.exports = problemsRouter;
