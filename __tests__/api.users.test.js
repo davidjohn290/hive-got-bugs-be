@@ -7,6 +7,7 @@ describe("/api/users", () => {
   afterAll(() => knex.destroy());
 
   describe("GET", () => {
+    // Refactor to use a query
     test("GET 200: responds with an array of user objects", () => {
       return request(app)
         .get("/api/users/mentors")

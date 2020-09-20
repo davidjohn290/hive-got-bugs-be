@@ -94,7 +94,7 @@ describe("/api/problems/problem_id", () => {
     const invalidMethods = ["put", "post"];
     const methodPromises = invalidMethods.map((method) => {
       return request(app)
-        [method]("/api/problems")
+        [method]("/api/problems/1")
         .expect(405)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Method not allowed!");

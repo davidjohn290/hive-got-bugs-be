@@ -12,11 +12,9 @@ const {
 } = require("../controllers/problems.controllers");
 const { handle405s } = require("../errors/");
 
-problemsRouter.route("/").get(getProblems).all(handle405s);
+problemsRouter.route("/").get(getProblems).post(addAProblem).all(handle405s);
 
 problemsRouter.get("/user/:username", getProblemsByUsername);
-
-problemsRouter.post("/new_problem", addAProblem).all(handle405s);
 
 problemsRouter
   .route("/:problem_id")

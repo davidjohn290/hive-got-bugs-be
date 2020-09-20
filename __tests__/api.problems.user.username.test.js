@@ -2,7 +2,8 @@ const app = require("../server");
 const request = require("supertest");
 const knex = require("../db/connection");
 
-describe("/api/problems/:username", () => {
+// Refactor this to use a query on the problems endpoint
+describe.skip("/api/problems/user/:username", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
 
@@ -31,7 +32,7 @@ describe("/api/problems/:username", () => {
     const invalidMethods = ["put", "patch", "post", "delete"];
     const methodPromises = invalidMethods.map((method) => {
       return request(app)
-        [method]("/api/problems")
+        [method]("/api/problems/Neall11")
         .expect(405)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Method not allowed!");

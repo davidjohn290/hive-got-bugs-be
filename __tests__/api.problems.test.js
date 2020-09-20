@@ -142,7 +142,7 @@ describe("/api/problems", () => {
   describe("POST", () => {
     test("POST Status 201: returns a problem object containing the new problem", () => {
       return request(app)
-        .post("/api/problems/new_problem")
+        .post("/api/problems/")
         .send({
           username: "Neal11",
           difficulty: 2,
