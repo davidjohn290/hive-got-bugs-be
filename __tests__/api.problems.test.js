@@ -179,8 +179,8 @@ describe("/api/problems", () => {
             "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
         })
         .expect(201)
-        .then(({ body: { newProblem } }) => {
-          expect(newProblem).toEqual(
+        .then(({ body: { problem } }) => {
+          expect(problem).toEqual(
             expect.objectContaining({
               problem_id: expect.any(Number),
               username: "Neal11",

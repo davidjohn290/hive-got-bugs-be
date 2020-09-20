@@ -11,8 +11,8 @@ describe("/api/tech", () => {
       return request(app)
         .get("/api/tech")
         .expect(200)
-        .then(({ body: { allTech } }) => {
-          expect(allTech.length).toBe(15);
+        .then(({ body: { tech } }) => {
+          expect(tech.length).toBe(15);
         });
     });
   });

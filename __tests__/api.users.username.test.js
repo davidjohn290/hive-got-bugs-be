@@ -33,9 +33,9 @@ describe("/api/users/:username", () => {
           inc_bug_points: 3,
         })
         .expect(200)
-        .then(({ body: { updatedUser } }) => {
-          expect(updatedUser.username).toBe("Neal11");
-          expect(updatedUser.bug_points).toBe(35);
+        .then(({ body: { user } }) => {
+          expect(user.username).toBe("Neal11");
+          expect(user.bug_points).toBe(35);
         });
     });
     test("PATCH 200: responds with the updated user object", () => {
@@ -48,12 +48,12 @@ describe("/api/users/:username", () => {
           bug_points_over_month: 10,
         })
         .expect(200)
-        .then(({ body: { updatedUser } }) => {
-          expect(updatedUser.username).toBe("Neal11");
-          expect(updatedUser.description).toBe("I'm a brilliant coder.");
-          expect(updatedUser.skill1).toBe("JavaScript");
-          expect(updatedUser.bug_points).toBe(29);
-          expect(updatedUser.bug_points_over_month).toBe(10);
+        .then(({ body: { user } }) => {
+          expect(user.username).toBe("Neal11");
+          expect(user.description).toBe("I'm a brilliant coder.");
+          expect(user.skill1).toBe("JavaScript");
+          expect(user.bug_points).toBe(29);
+          expect(user.bug_points_over_month).toBe(10);
         });
     });
     test("PATCH 404: username not found", () => {
@@ -71,7 +71,7 @@ describe("/api/users/:username", () => {
       return request(app)
         .patch("/api/users/Neal11")
         .send({
-          bug_points: "apple",
+          inc_bug_points: "apple",
         })
         .expect(400)
         .then(({ body: { msg } }) => {

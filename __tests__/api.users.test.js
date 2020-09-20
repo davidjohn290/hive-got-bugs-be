@@ -48,8 +48,8 @@ describe("/api/users", () => {
           role: "user",
         })
         .expect(201)
-        .then(({ body: { newUser } }) => {
-          expect(newUser).toEqual(
+        .then(({ body: { user } }) => {
+          expect(user).toEqual(
             expect.objectContaining({
               name: "John Smith",
               username: "originalCoder",

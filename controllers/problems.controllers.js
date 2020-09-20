@@ -36,8 +36,8 @@ exports.getProblems = (req, res, next) => {
 exports.getProblemById = (req, res, next) => {
   const { problem_id } = req.params;
   selectProblemById(problem_id)
-    .then((problemById) => {
-      res.status(200).send({ problemById });
+    .then((problem) => {
+      res.status(200).send({ problem });
     })
     .catch((err) => {
       next(err);
@@ -46,7 +46,7 @@ exports.getProblemById = (req, res, next) => {
 
 exports.addAProblem = (req, res, next) => {
   insertAProblem(req.body)
-    .then((newProblem) => res.status(201).send({ newProblem }))
+    .then((problem) => res.status(201).send({ problem }))
     .catch((err) => {
       next(err);
     });
@@ -56,8 +56,8 @@ exports.patchProblemById = (req, res, next) => {
   const { body } = req;
   const { problem_id } = req.params;
   updateProblemById(body, problem_id)
-    .then((updatedProblem) => {
-      res.status(200).send({ updatedProblem });
+    .then((problem) => {
+      res.status(200).send({ problem });
     })
     .catch(next);
 };

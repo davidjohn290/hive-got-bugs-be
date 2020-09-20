@@ -11,8 +11,8 @@ exports.getTechBySlug = (req, res, next) => {
 
 exports.getAllTech = (req, res, next) => {
   selectAllTech()
-    .then((allTech) => {
-      res.status(200).send({ allTech });
+    .then((tech) => {
+      res.status(200).send({ tech });
     })
     .catch(next);
 };

@@ -9,8 +9,8 @@ exports.patchSuggestion = (req, res, next) => {
   const { suggestion_id } = req.params;
   const { body } = req;
   updateSuggestionById(suggestion_id, body)
-    .then((updatedSuggestion) => {
-      res.status(200).send({ updatedSuggestion });
+    .then((suggestion) => {
+      res.status(200).send({ suggestion });
     })
     .catch(next);
 };
@@ -37,8 +37,8 @@ exports.postSuggestionByProblemId = (req, res, next) => {
   const { problem_id } = req.params;
   const { body } = req;
   addSuggestionByProblemId(problem_id, body)
-    .then((newSuggestion) => {
-      res.status(201).send({ newSuggestion });
+    .then((suggestion) => {
+      res.status(201).send({ suggestion });
     })
     .catch(next);
 };

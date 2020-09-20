@@ -12,8 +12,8 @@ describe("/api/suggestions/:suggestion_id", () => {
         .patch("/api/suggestions/16")
         .send({ body: "updated body for test!" })
         .expect(200)
-        .then(({ body: { updatedSuggestion } }) => {
-          expect(updatedSuggestion.body).toBe("updated body for test!");
+        .then(({ body: { suggestion } }) => {
+          expect(suggestion.body).toBe("updated body for test!");
         });
     });
     test("PATCH 404: suggestion not found", () => {

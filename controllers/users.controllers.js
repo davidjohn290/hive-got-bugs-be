@@ -26,8 +26,8 @@ exports.getUserByUsername = (req, res, next) => {
 exports.postNewUser = (req, res, next) => {
   const { body } = req;
   addNewUser(body)
-    .then((newUser) => {
-      res.status(201).send({ newUser });
+    .then((user) => {
+      res.status(201).send({ user });
     })
     .catch(next);
 };
@@ -36,8 +36,8 @@ exports.patchNewUser = (req, res, next) => {
   const { body } = req;
   const { username } = req.params;
   updateUserByUsername(body, username)
-    .then((updatedUser) => {
-      res.status(200).send({ updatedUser });
+    .then((user) => {
+      res.status(200).send({ user });
     })
     .catch(next);
 };

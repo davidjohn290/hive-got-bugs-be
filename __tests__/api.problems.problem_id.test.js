@@ -11,15 +11,15 @@ describe("/api/problems/problem_id", () => {
       return request(app)
         .get("/api/problems/1")
         .expect(200)
-        .then(({ body: { problemById } }) => {
-          expect(problemById.problem_id).toBe(1);
-          expect(problemById).toHaveProperty("created_at");
-          expect(problemById).toHaveProperty("username");
-          expect(problemById).toHaveProperty("difficulty");
-          expect(problemById).toHaveProperty("solved");
-          expect(problemById).toHaveProperty("tech");
-          expect(problemById).toHaveProperty("title");
-          expect(problemById).toHaveProperty("body");
+        .then(({ body: { problem } }) => {
+          expect(problem.problem_id).toBe(1);
+          expect(problem).toHaveProperty("created_at");
+          expect(problem).toHaveProperty("username");
+          expect(problem).toHaveProperty("difficulty");
+          expect(problem).toHaveProperty("solved");
+          expect(problem).toHaveProperty("tech");
+          expect(problem).toHaveProperty("title");
+          expect(problem).toHaveProperty("body");
         });
     });
     test("GET 404: Problem not found", () => {
@@ -76,8 +76,8 @@ describe("/api/problems/problem_id", () => {
           title: "A new title",
         })
         .expect(200)
-        .then(({ body: { updatedProblem } }) => {
-          expect(updatedProblem).toEqual(
+        .then(({ body: { problem } }) => {
+          expect(problem).toEqual(
             expect.objectContaining({
               problem_id: expect.any(Number),
               username: expect.any(String),
@@ -89,10 +89,10 @@ describe("/api/problems/problem_id", () => {
               body: expect.any(String),
             })
           );
-          expect(updatedProblem.body).toBe(
+          expect(problem.body).toBe(
             "Sometimes the best way to get a feel for a problem."
           );
-          expect(updatedProblem.title).toBe("A new title");
+          expect(problem.title).toBe("A new title");
         });
     });
     test("PATCH 404: Problem not found", () => {

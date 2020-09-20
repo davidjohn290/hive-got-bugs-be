@@ -41,9 +41,9 @@ describe("/api/problems/:problem_id/suggestions", () => {
         .post("/api/problems/1/suggestions")
         .send({ username: "Neal11", body: "I think you should do this..." })
         .expect(201)
-        .then(({ body: { newSuggestion } }) => {
-          expect(newSuggestion.username).toBe("Neal11");
-          expect(newSuggestion.problem_id).toBe(1);
+        .then(({ body: { suggestion } }) => {
+          expect(suggestion.username).toBe("Neal11");
+          expect(suggestion.problem_id).toBe(1);
         });
     });
     test("POST 400: missing information", () => {
