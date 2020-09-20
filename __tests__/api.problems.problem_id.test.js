@@ -22,7 +22,6 @@ describe("/api/problems/problem_id", () => {
           expect(problemById).toHaveProperty("body");
         });
     });
-
     test("GET 404: Problem not found", () => {
       return request(app)
         .get("/api/problems/111110000")
@@ -31,7 +30,6 @@ describe("/api/problems/problem_id", () => {
           expect(msg).toBe("Problem not found!");
         });
     });
-
     test("GET 400: problem_id is wrong type", () => {
       return request(app)
         .get("/api/problems/banana")
@@ -51,8 +49,22 @@ describe("/api/problems/problem_id", () => {
           return knex("problems").where("problem_id", 1);
         });
     });
-    // To do: DELETE 404 (problem_id not found)
-    // To do: DELETE 400 (problem_id is wrong type)
+    test("DELETE 404: Problem not found", () => {
+      return request(app)
+        .del("/api/problems/111110000")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Problem not found!");
+        });
+    });
+    test("DELETE 400: problem_id is wrong type", () => {
+      return request(app)
+        .del("/api/problems/banana")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("PATCH", () => {
@@ -61,6 +73,7 @@ describe("/api/problems/problem_id", () => {
         .patch("/api/problems/1")
         .send({
           body: "Sometimes the best way to get a feel for a problem.",
+          title: "A new title",
         })
         .expect(200)
         .then(({ body: { updatedProblem } }) => {
@@ -79,12 +92,49 @@ describe("/api/problems/problem_id", () => {
           expect(updatedProblem.body).toBe(
             "Sometimes the best way to get a feel for a problem."
           );
+          expect(updatedProblem.title).toBe("A new title");
         });
     });
-    // To do: PATCH 404 (problem_id not found)
-    // To do: PATCH 400 (problem_id is wrong type)
-    // To do: PATCH 400 (body has missing fields)
-    // To do: PATCH 400 (wrong type in body )
+    test("PATCH 404: Problem not found", () => {
+      return request(app)
+        .patch("/api/problems/111110000")
+        .send({
+          body: "Sometimes the best way to get a feel for a problem.",
+        })
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Problem not found!");
+        });
+    });
+    test("PATCH 400: problem_id is wrong type", () => {
+      return request(app)
+        .patch("/api/problems/banana")
+        .send({
+          body: "Sometimes the best way to get a feel for a problem.",
+        })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("PATCH 400: missing body", () => {
+      return request(app)
+        .patch("/api/problems/1")
+        .send({})
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("PATCH 400: column doesn't exist", () => {
+      return request(app)
+        .patch("/api/problems/1")
+        .send({ banana: "apple" })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("INVALID METHODS", () => {

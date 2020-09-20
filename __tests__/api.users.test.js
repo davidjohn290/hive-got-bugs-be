@@ -42,7 +42,7 @@ describe("/api/users", () => {
           name: "John Smith",
           avatar_url:
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
-          online_status: "offline",
+          online_status: "false",
           bug_points: 0,
           bug_points_over_month: 0,
           role: "user",
@@ -50,22 +50,24 @@ describe("/api/users", () => {
         .expect(201)
         .then(({ body: { newUser } }) => {
           expect(newUser).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                name: "John Smith",
-                username: "originalCoder",
-                role: "user",
-                created_at: expect.any(String),
-                avatar_url:
-                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
-                online_status: "offline",
-                bug_points: 0,
-                bug_points_over_month: 0,
-              }),
-            ])
+            expect.objectContaining({
+              name: "John Smith",
+              username: "originalCoder",
+              role: "user",
+              created_at: expect.any(String),
+              avatar_url:
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+              online_status: "false",
+              bug_points: 0,
+              bug_points_over_month: 0,
+              description: null,
+              github_url: null,
+              skill1: null,
+              skill2: null,
+              skill3: null,
+              skill4: null,
+            })
           );
-          expect(newUser[0].username).toBe("originalCoder");
-          expect(newUser[0].name).toBe("John Smith");
         });
     });
     test("POST 400: responds with a 400 error when missing data from a post request", () => {
@@ -79,7 +81,43 @@ describe("/api/users", () => {
           expect(msg).toBe("Bad request!");
         });
     });
-    // TO do: POST 400 - data of wrong type in body
+    test("POST 400: data of wrong type in body", () => {
+      return request(app)
+        .post("/api/users/")
+        .send({
+          username: "originalCoder",
+          name: "John Smith",
+          avatar_url:
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+          online_status: "offline",
+          bug_points: "banana",
+          bug_points_over_month: 0,
+          role: "user",
+        })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("POST 400: trying to add non-existent column", () => {
+      return request(app)
+        .post("/api/users/")
+        .send({
+          username: "originalCoder",
+          name: "John Smith",
+          avatar_url:
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+          online_status: "offline",
+          bug_points: 0,
+          bug_points_over_month: 0,
+          role: "user",
+          banana: "apple",
+        })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("INVALID METHODS", () => {

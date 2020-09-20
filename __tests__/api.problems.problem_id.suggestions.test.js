@@ -25,7 +25,14 @@ describe("/api/problems/:problem_id/suggestions", () => {
           expect(msg).toBe("Problem_id does not exist!");
         });
     });
-    // TODO: GET 400: problem_id is wrong type
+    test("GET 400: problem_id wrong type", () => {
+      return request(app)
+        .get("/api/problems/banana/suggestions")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("POST", () => {
@@ -48,16 +55,23 @@ describe("/api/problems/:problem_id/suggestions", () => {
           expect(msg).toBe("Bad request!");
         });
     });
-    test("POST 404: responds with 404 error when given non existent problem Id", () => {
+    test("POST 422: body syntactically correct but problem_id not found ", () => {
       return request(app)
         .post("/api/problems/122234/suggestions")
         .send({ username: "Neal11", body: "What a good suggestion" })
-        .expect(404)
+        .expect(422)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Value not found!");
+          expect(msg).toBe("Unprocessable entity!");
         });
     });
-    // TODO: GET 400: problem_id is wrong type
+    test("POST 400: problem_id wrong type", () => {
+      return request(app)
+        .post("/api/problems/banana/suggestions")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("INVALID METHODS", () => {

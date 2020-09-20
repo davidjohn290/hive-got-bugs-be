@@ -16,10 +16,42 @@ describe("/api/suggestions/:suggestion_id", () => {
           expect(updatedSuggestion.body).toBe("updated body for test!");
         });
     });
-    // To do: PATCH 404 - suggestion_id not found
-    // To do: PATCH 400 - suggestion_id wrong type
-    // To do: PATCH 400 - wrong type in body
-    // To do: PATCH 400 - trying to patch non-existent column
+    test("PATCH 404: suggestion not found", () => {
+      return request(app)
+        .patch("/api/suggestions/99999")
+        .send({ body: "updated body for test!" })
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Suggestion not found!");
+        });
+    });
+    test("PATCH 400: suggestion_id wrong type", () => {
+      return request(app)
+        .patch("/api/suggestions/banana")
+        .send({ body: "updated body for test!" })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("PATCH 400: missing data in body", () => {
+      return request(app)
+        .patch("/api/suggestions/16")
+        .send({})
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("PATCH 400: column doesn't exist", () => {
+      return request(app)
+        .patch("/api/suggestions/16")
+        .send({ banana: "apple" })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("DELETE", () => {

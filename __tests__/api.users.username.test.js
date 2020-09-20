@@ -30,7 +30,7 @@ describe("/api/users/:username", () => {
       return request(app)
         .patch("/api/users/Neal11")
         .send({
-          bug_points: 3,
+          inc_bug_points: 3,
         })
         .expect(200)
         .then(({ body: { updatedUser } }) => {
@@ -41,23 +41,61 @@ describe("/api/users/:username", () => {
     test("PATCH 200: responds with the updated user object", () => {
       return request(app)
         .patch("/api/users/Neal11")
-        .send({ description: "I'm a brilliant coder." })
+        .send({
+          description: "I'm a brilliant coder.",
+          skill1: "JavaScript",
+          inc_bug_points: -3,
+          bug_points_over_month: 10,
+        })
         .expect(200)
         .then(({ body: { updatedUser } }) => {
           expect(updatedUser.username).toBe("Neal11");
           expect(updatedUser.description).toBe("I'm a brilliant coder.");
+          expect(updatedUser.skill1).toBe("JavaScript");
+          expect(updatedUser.bug_points).toBe(29);
+          expect(updatedUser.bug_points_over_month).toBe(10);
         });
     });
-    test("PATCH 400: responds with a 400 error when trying to update a property that doesn't exist", () => {
+    test("PATCH 404: username not found", () => {
+      return request(app)
+        .patch("/api/users/NotAUser")
+        .send({
+          bug_points: 3,
+        })
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("User not found!");
+        });
+    });
+    test("PATCH 400: wrong data type in body", () => {
       return request(app)
         .patch("/api/users/Neal11")
-        .send({ points: 2 })
+        .send({
+          bug_points: "apple",
+        })
         .expect(400)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Bad request!");
         });
     });
-    // To do: PATCH 400: wrong type in body
+    test("PATCH 400: missing data in body", () => {
+      return request(app)
+        .patch("/api/users/Neal11")
+        .send({})
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("PATCH 400: column doesn't exist", () => {
+      return request(app)
+        .patch("/api/users/Neal11")
+        .send({ banana: "apple" })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
   });
 
   describe("INVALID METHODS", () => {

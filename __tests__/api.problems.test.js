@@ -50,7 +50,7 @@ describe("/api/problems", () => {
       });
       test("GET 200: invalid query", () => {
         return request(app)
-          .get("/api/problems?apple=bannana")
+          .get("/api/problems?apple=banana")
           .expect(200)
           .then(({ body: { problems } }) => {
             expect(problems.length).toBe(10);
@@ -59,7 +59,7 @@ describe("/api/problems", () => {
       });
       test("GET 400: invalid sort order", () => {
         return request(app)
-          .get("/api/problems?sort_by=difficulty&order=bannana")
+          .get("/api/problems?sort_by=difficulty&order=banana")
           .expect(400)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("Bad request!");
@@ -132,7 +132,7 @@ describe("/api/problems", () => {
       });
       test("GET 404: tech does not exist", () => {
         return request(app)
-          .get("/api/problems?tech=bannana")
+          .get("/api/problems?tech=banana")
           .expect(404)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("Tech not found!");
@@ -166,7 +166,7 @@ describe("/api/problems", () => {
   });
 
   describe("POST", () => {
-    test("POST Status 201: returns a problem object containing the new problem", () => {
+    test("POST 201: returns a problem object containing the new problem", () => {
       return request(app)
         .post("/api/problems/")
         .send({
@@ -195,9 +195,72 @@ describe("/api/problems", () => {
           );
         });
     });
-    // To do: POST 400 - Missing required fields in body
-    // To do: POST 400 - Wrong type in body
-    // To do: POST 400 - Trying to add non-existent column
+    test("POST 400: missing required fields", () => {
+      return request(app)
+        .post("/api/problems/")
+        .send({
+          difficulty: 2,
+          solved: false,
+          tech: "JavaScript",
+          title: "How to discard local file modifications in git",
+          body:
+            "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
+        })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("POST 400: wrong type in body", () => {
+      return request(app)
+        .post("/api/problems/")
+        .send({
+          username: "Neal11",
+          difficulty: "banana",
+          solved: false,
+          tech: "JavaScript",
+          title: "How to discard local file modifications in git",
+          body:
+            "Sometimes the best way to get a feel for a problem is diving in and playing around with the code.",
+        })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("POST 400: trying to add non-existent column", () => {
+      return request(app)
+        .post("/api/problems/")
+        .send({
+          username: "Neal11",
+          difficulty: 1,
+          solved: false,
+          tech: "JavaScript",
+          title: "How to discard local file modifications in git",
+          body: "Sometimes the best way",
+          banana: "apple",
+        })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request!");
+        });
+    });
+    test("POST 422: body syntactically correct, but username not found", () => {
+      return request(app)
+        .post("/api/problems/")
+        .send({
+          username: "NotAUser",
+          difficulty: 1,
+          solved: false,
+          tech: "JavaScript",
+          title: "How to discard local file modifications in git",
+          body: "Sometimes the best way",
+        })
+        .expect(422)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Unprocessable entity!");
+        });
+    });
   });
 
   describe("INVALID METHODS", () => {
