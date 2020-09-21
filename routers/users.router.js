@@ -1,14 +1,21 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { getMentors, getUser } = require("../controllers/users.controllers");
 
-usersRouter.get("/mentors", getMentors);
+const {
+  getUsers,
+  getUserByUsername,
+  postNewUser,
+  patchNewUser,
+} = require("../controllers/users.controllers");
 
-usersRouter.route("/:username").get(getUser);
-//.patch(funcHere!).post(funcHere!).delete(funcHere!).all(funcHere!);
+const { handle405s } = require("../errors");
 
-// usersRouter.post("/new_user", funcHere!);
+usersRouter.route("/").get(getUsers).post(postNewUser).all(handle405s);
 
-// usersRouter.patch(":user_id/online_status", funcHere!);
+usersRouter
+  .route("/:username")
+  .get(getUserByUsername)
+  .patch(patchNewUser)
+  .all(handle405s);
 
 module.exports = usersRouter;

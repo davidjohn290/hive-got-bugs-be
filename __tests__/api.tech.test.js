@@ -2,37 +2,27 @@ const app = require("../server");
 const request = require("supertest");
 const knex = require("../db/connection");
 
-describe("/api/tech/:slug", () => {
+describe("/api/tech", () => {
   beforeEach(() => knex.seed.run());
   afterAll(() => knex.destroy());
+
   describe("GET", () => {
-    test("GET 200: responds with a tech object ", () => {
+    test("GET 200: responds with all the tech objects", () => {
       return request(app)
-        .get("/api/tech/JavaScript")
+        .get("/api/tech")
         .expect(200)
         .then(({ body: { tech } }) => {
-          expect(tech).toEqual(
-            expect.objectContaining({
-              slug: expect.any(String),
-            })
-          );
-        });
-    });
-    test("GET 404: tech not found", () => {
-      return request(app)
-        .get("/api/tech/notAPieceOfTech")
-        .expect(404)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Tech not found!");
+          expect(tech.length).toBe(15);
         });
     });
   });
+
   describe("INVALID METHODS", () => {
-    test("405: when request uses invalid method", () => {
+    test("405: request uses invalid method", () => {
       const invalidMethods = ["put", "post", "patch", "delete"];
       const methodPromises = invalidMethods.map((method) => {
         return request(app)
-          [method]("/api/tech/JavaScript")
+          [method]("/api/tech")
           .expect(405)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("Method not allowed!");
