@@ -36,12 +36,7 @@ exports.selectSuggestionsByProblemId = (id) => {
     .where("problem_id", id)
     .orderBy("created_at", "desc")
     .then((suggestions) => {
-      if (suggestions.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: "Problem_id does not exist!",
-        });
-      } else return suggestions;
+      return suggestions;
     });
 };
 
