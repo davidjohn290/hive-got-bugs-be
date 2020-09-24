@@ -34,6 +34,7 @@ exports.selectSuggestionsByProblemId = (id) => {
     .select("*")
     .from("suggestions")
     .where("problem_id", id)
+    .orderBy("created_at", "desc")
     .then((suggestions) => {
       return suggestions;
     });
