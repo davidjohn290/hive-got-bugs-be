@@ -17,14 +17,7 @@ describe("/api/problems/:problem_id/suggestions", () => {
           });
         });
     });
-    test("GET 404: responds with 404 error when given a non existent problem Id", () => {
-      return request(app)
-        .get("/api/problems/12323/suggestions")
-        .expect(404)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Problem_id does not exist!");
-        });
-    });
+
     test("GET 400: problem_id wrong type", () => {
       return request(app)
         .get("/api/problems/banana/suggestions")
