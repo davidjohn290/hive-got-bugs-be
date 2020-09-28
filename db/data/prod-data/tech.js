@@ -1,33 +1,15 @@
 module.exports = [
   {
+    slug: "HTML",
+  },
+  {
+    slug: "CSS",
+  },
+  {
     slug: "JavaScript",
   },
   {
-    slug: "Python",
-  },
-  {
-    slug: "Ruby",
-  },
-  {
     slug: "React",
-  },
-  {
-    slug: "Java",
-  },
-  {
-    slug: "TypeScript",
-  },
-  {
-    slug: "Django",
-  },
-  {
-    slug: "C++",
-  },
-  {
-    slug: "C",
-  },
-  {
-    slug: "C#.net",
   },
   {
     slug: "Redux",
@@ -43,5 +25,32 @@ module.exports = [
   },
   {
     slug: "SQL",
+  },
+  {
+    slug: "TypeScript",
+  },
+  {
+    slug: "Python",
+  },
+  {
+    slug: "Django",
+  },
+  {
+    slug: "Ruby",
+  },
+  {
+    slug: "Rails",
+  },
+  {
+    slug: "Java",
+  },
+  {
+    slug: "C++",
+  },
+  {
+    slug: "C",
+  },
+  {
+    slug: "C#.net",
   },
 ];
