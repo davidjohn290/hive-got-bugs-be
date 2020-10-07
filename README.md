@@ -1,14 +1,14 @@
 # Hive Got Bugs (Back End) 🐛
 
-Hive Got Bugs is a site where junior developers can share solutions to common coding problems, while also having access to expert, personalised help from an experienced mentor. This is the back end of the project, built using Node.js, Express, Knex.js, and PostgreSQL, with testing carried out using Jest. The site was built in two weeks as a final group project as part of the [Northcoders](https://www.northcoders.com/) coding bootcamp.
+Hive Got Bugs is a site where junior developers can share solutions to common coding problems, while also having access to expert, personalised help from an experienced mentor. This is the back end of the project, a RESTful API built using Node.js, Express, Knex.js, and PostgreSQL, with testing carried out using Jest. The site was built in two weeks as a final group project as part of the [Northcoders](https://www.northcoders.com/) coding bootcamp.
+
+- View the [hosted API](https://hive-got-bugs.herokuapp.com/api/)
 
 - View a [presentation and demo](https://www.youtube.com/watch?v=fFv-CJZnrbI) of the site
 
 - Visit the [deployed site](https://hive-got-bugs.netlify.app/) (you will need a github account in order to log in or post)
 
 - View the [front end repository](https://github.com/davidjohn290/hive-got-bugs-fe)
-
-- View the [hosted API](https://hive-got-bugs.herokuapp.com/api/) that serves the site
 
 ## Prerequisites
 
