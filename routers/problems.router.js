@@ -28,6 +28,7 @@ problemsRouter
 problemsRouter
   .route("/:problem_id/suggestions")
   .get(getSuggestionByProblemId)
-  .post(postSuggestionByProblemId);
+  .post(postSuggestionByProblemId)
+  .all(handle405s);
 
 module.exports = problemsRouter;
