@@ -35,7 +35,7 @@ const customConfig = {
   test: {
     connection: {
       database: "hive_got_bugs_test",
-      user: username
+      user: username,
       password: password,
     },
   },
