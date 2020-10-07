@@ -22,7 +22,7 @@ Hive Got Bugs is a site where junior developers can share solutions to common co
 - If using linux, you will need to add your PSQL username and password information to the `customConfig` object in `knexfile.js`. To keep you details secure, you should export these details from a new javascript file, and add this file to the `.gitignore`. Your details can then be added to the customConfig object as variables:
 
 ```javascript
-const {username, password} = require("./mySecretFile.js");
+const {username, password} = require("./mySecretFile");
 
 const customConfig = {
   development: {
