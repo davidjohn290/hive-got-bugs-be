@@ -1,0 +1,267 @@
+{
+  "GET /api": {
+    "description": "serves up a json representation of all API endpoints"
+  },
+  "GET /api/problems": {
+    "description": "serves an array of all problems",
+    "queries": ["sort_by", "order", "difficulty", "tech", "solved", "username"],
+    "exampleResponse": {
+      "problems": [
+        {
+          "problem_id": 8,
+          "created_at": "2020-09-29T10:08:55.475Z",
+          "username": "stephenjbradshaw",
+          "difficulty": 1,
+          "solved": true,
+          "tech": "CSS",
+          "title": "Styled components",
+          "body": "What are some of the advantages of using Styled Components?"
+        }
+      ]
+    }
+  },
+  "POST /api/problems": {
+    "description": "add a problem",
+    "exampleBody": {
+      "username": "Neal11",
+      "difficulty": 2,
+      "solved": false,
+      "tech": "JavaScript",
+      "title": "How to discard local file modifications in git",
+      "body": "Sometimes the best way to get a feel for a problem is diving in and playing around with the code."
+    },
+    "exampleResponse": {
+      "problem": {
+        "username": "Neal11",
+        "difficulty": 2,
+        "solved": false,
+        "tech": "JavaScript",
+        "title": "How to discard local file modifications in git",
+        "body": "Sometimes the best way to get a feel for a problem is diving in and playing around with the code."
+      }
+    }
+  },
+  "GET /api/problems/:problem_id": {
+    "description": "serves a particular problem",
+    "exampleResponse": {
+      "problem": {
+        "problem_id": 8,
+        "created_at": "2020-09-29T10:08:55.475Z",
+        "username": "stephenjbradshaw",
+        "difficulty": 1,
+        "solved": true,
+        "tech": "CSS",
+        "title": "Styled components",
+        "body": "What are some of the advantages of using Styled Components?"
+      }
+    }
+  },
+  "DELETE /api/problems/:problem_id": {
+    "description": "delete a particular problem, no response body"
+  },
+  "PATCH /api/problems/:problem_id": {
+    "description": "edit a problem",
+    "exampleBody": {
+      "title": "A new title",
+      "body": "A new body"
+    },
+    "exampleResponse": {
+      "problem": {
+        "problem_id": 8,
+        "created_at": "2020-09-29T10:08:55.475Z",
+        "username": "stephenjbradshaw",
+        "difficulty": 1,
+        "solved": true,
+        "tech": "CSS",
+        "title": "A new title",
+        "body": "A new body"
+      }
+    }
+  },
+  "GET /api/problems/:problem_id/suggestions": {
+    "description": "serves an array of suggestions belonging to a particular problem",
+    "exampleResponse": {
+      "suggestions": [
+        {
+          "suggestion_id": 1,
+          "problem_id": 1,
+          "created_at": "2020-07-15T10:17:34.873Z",
+          "username": "janedoe42",
+          "approved_by": null,
+          "body": "Try looking into the <select> and <option> tags - there are some good examples of multiple selection in the MDN docs"
+        }
+      ]
+    }
+  },
+  "POST /api/problems/:problem_id/suggestions": {
+    "description": "add a suggestion to a particular problem",
+    "exampleBody": {
+      "username": "Neal11",
+      "body": "I think you should do this..."
+    },
+    "exampleResponse": {
+      "suggestion": {
+        "suggestion_id": 1,
+        "problem_id": 1,
+        "created_at": "2020-06-15T10:18:32.862Z",
+        "username": "Neal11",
+        "approved_by": null,
+        "body": "I think you should do this..."
+      }
+    }
+  },
+  "PATCH /api/suggestions/:suggestion_id": {
+    "description": "edit a particular suggestion",
+    "exampleBody": {
+      "body": "A new body"
+    },
+    "exampleResponse": {
+      "suggestion": {
+        "suggestion_id": 1,
+        "problem_id": 1,
+        "created_at": "2020-07-15T10:17:34.873Z",
+        "username": "janedoe42",
+        "approved_by": null,
+        "body": "A new body"
+      }
+    }
+  },
+  "DELETE /api/suggestions/:suggestion_id": {
+    "description": "delete a particular suggestion, no response body"
+  },
+  "GET /api/users": {
+    "description": "serves an array of users, role query is compulsory",
+    "queries": ["role"],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "janedoe42",
+          "created_at": "2019-08-15T21:04:36.134Z",
+          "name": "Dr. Jane Doe",
+          "avatar_url": "https://s3.amazonaws.com/uifaces/faces/twitter/rpatey/128.jpg",
+          "online_status": "false",
+          "bug_points": 67,
+          "bug_points_over_month": 0,
+          "role": "mentor",
+          "description": "Jane is a senior developer with over 10 years experience in the robotics industry",
+          "github_url": "https://github.com/janedoe42",
+          "skill1": "C",
+          "skill2": "C++",
+          "skill3": "Java",
+          "skill4": null
+        }
+      ]
+    }
+  },
+  "POST /api/users": {
+    "description": "adds a new user",
+    "exampleBody": {
+      "username": "originalCoder",
+      "name": "John Smith",
+      "avatar_url": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+      "online_status": "false",
+      "bug_points": 0,
+      "bug_points_over_month": 0,
+      "role": "user"
+    },
+    "exampleResponse": {
+      "user": {
+        "name": "John Smith",
+        "username": "originalCoder",
+        "role": "user",
+        "created_at": "2019-08-15T21:04:37.123Z",
+        "avatar_url": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+        "online_status": "false",
+        "bug_points": 0,
+        "bug_points_over_month": 0,
+        "description": null,
+        "github_url": null,
+        "skill1": null,
+        "skill2": null,
+        "skill3": null,
+        "skill4": null
+      }
+    }
+  },
+  "GET /api/users/:username": {
+    "description": "serves a particular user",
+    "exampleResponse": {
+      "user": {
+        "username": "janedoe42",
+        "created_at": "2019-08-15T21:04:36.134Z",
+        "name": "Dr. Jane Doe",
+        "avatar_url": "https://s3.amazonaws.com/uifaces/faces/twitter/rpatey/128.jpg",
+        "online_status": "false",
+        "bug_points": 67,
+        "bug_points_over_month": 0,
+        "role": "mentor",
+        "description": "Jane is a senior developer with over 10 years experience in the robotics industry",
+        "github_url": "https://github.com/janedoe42",
+        "skill1": "C",
+        "skill2": "C++",
+        "skill3": "Java",
+        "skill4": null
+      }
+    }
+  },
+  "PATCH /api/users/:username": {
+    "description": "edit a particular user, e.g. to increase bug points, or to become a mentor",
+    "exampleBody0": { "inc_bug_points": 3 },
+    "exampleResponse0": {
+      "user": {
+        "name": "John Smith",
+        "username": "originalCoder",
+        "role": "user",
+        "created_at": "2019-08-15T21:04:37.123Z",
+        "avatar_url": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+        "online_status": "false",
+        "bug_points": 3,
+        "bug_points_over_month": 0,
+        "description": null,
+        "github_url": null,
+        "skill1": null,
+        "skill2": null,
+        "skill3": null,
+        "skill4": null
+      }
+    },
+    "exampleBody1": {
+      "role": "mentor",
+      "description": "I am a mentor",
+      "github_url": "https://github.com/example",
+      "skill1": "C",
+      "skill2": "C++",
+      "skill3": "Java"
+    },
+    "exampleResponse1": {
+      "user": {
+        "name": "John Smith",
+        "username": "originalCoder",
+        "role": "mentor",
+        "created_at": "2019-08-15T21:04:37.123Z",
+        "avatar_url": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+        "online_status": "false",
+        "bug_points": 10,
+        "bug_points_over_month": 0,
+        "description": "I am a mentor",
+        "github_url": "https://github.com/example",
+        "skill1": "C",
+        "skill2": "C++",
+        "skill3": "Java",
+        "skill4": null
+      }
+    }
+  },
+  "GET /api/tech": {
+    "description": "serves an array of possible tech",
+    "exampleResponse": {
+      "tech": [{ "slug": "HTML" }, { "slug": "CSS" }]
+    }
+  },
+  "GET /api/tech/:slug": {
+    "description": "serves a particular tech slug, used internally by the API",
+    "exampleResponse": {
+      "tech": { "slug": "HTML" }
+    }
+  }
+}
