@@ -53,15 +53,17 @@ const customConfig = {
 ## Using the API locally
 
 - Make sure that PostgreSQL is installed and running
-- Seed the database: `npm run seed-dev`
+- Create the databases: `npm run setup-dbs`
+- Seed the dev database: `npm run seed-dev`
 - Start the server, which will run on port 9090: `npm start`
 - In the browser, navigate to `localhost:9090/api` to view a JSON file showing the available endpoints
 
 ## Running tests
 
 - Tests check each endpoint of the API, and are run using `jest` and `supertest`
-- The database is automatically reseeded before each test. Alternatively, reseeding can be carried out manually using `npm run seed-test`
-- To run the tests: `npm test`
+- Create the test and dev databases, if not already created: `npm run setup-dbs`
+- Run the tests: `npm test`
+- The test database is automatically reseeded before each test. To reseed manually, use: `npm run seed-test`
 
 ## Authors
 
