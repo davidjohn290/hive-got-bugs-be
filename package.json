@@ -34,7 +34,7 @@
   "homepage": "https://github.com/davidjohn290/hive-got-bugs-be#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run format & npm run test-all"
+      "pre-commit": "npm run lint && npm run format && npm run test-all"
     }
   },
   "jest": {
@@ -49,7 +49,6 @@
     "pg": "^8.3.3"
   },
   "devDependencies": {
-    "db-migrate": "^0.11.11",
     "eslint": "^7.9.0",
     "faker": "^5.1.0",
     "husky": "^4.3.0",
